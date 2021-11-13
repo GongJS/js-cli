@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "colors": "^1.4.0",
-    "path-exists": "^5.0.0",
+    "path-exists": "4.0.0",
     "semver": "^7.3.5"
   }
 }

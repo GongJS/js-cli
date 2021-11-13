@@ -3,9 +3,12 @@ import semver from 'semver'
 import colors from 'colors'
 import rootCheck from 'root-check'
 import os from 'os'
-import { pathExists } from 'path-exists'
-import { LOWEST_NODE_VERSION} from '../../../const'
+import pathExists from 'path-exists'
+import { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } from '../../../const'
+
 const pkg = require('../package.json')
+const userHome = os.homedir()
+let config = {}
 
 const core = () => {
     try {
@@ -34,9 +37,9 @@ const checkNodeVersion = () => {
 }
 
 const checkUserHome = () => {
-    const usrHome = os.homedir()
-    if (!usrHome || !pathExists(usrHome)) {
+    if (!userHome || !pathExists(userHome)) {
         throw new Error(colors.red('当前登录用户主目录不存在'))
     }
 }
+
 export default core
