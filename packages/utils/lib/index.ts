@@ -1,2 +1,3 @@
 import log from './log';
-export { log };
+import * as http from './getNpmInfo'
+export { log, http };

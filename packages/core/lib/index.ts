@@ -1,4 +1,4 @@
-import { log } from '@js-cli/utils'
+import { log, http } from '@js-cli/utils'
 import semver from 'semver'
 import colors from 'colors'
 import rootCheck from 'root-check'
@@ -20,6 +20,7 @@ const core = () => {
         checkUserHome()
         checkInputArgs()
         checkEnv()
+        checkGlobalUpdate()
     }  catch (e) {
         if (e instanceof Error) {
             log.error('core', e.message)
@@ -81,4 +82,12 @@ const checkInputArgs = () => {
     log.level = process.env.LOG_LEVEL
 }
 
+const checkGlobalUpdate = async () => {
+    const currentVersion = pkg.version
+    const npmName = pkg.name
+    const latestVersion = await http.getNpmSemverVersion(currentVersion, npmName)
+    if (latestVersion && semver.gt(latestVersion, currentVersion)) {
+        log.warn('checkGlobalUpdate', colors.yellow(`请手动更新 ${npmName}, 当前版本：${currentVersion}, 最新版本；${latestVersion}`))
+    }
+}
 export default core
