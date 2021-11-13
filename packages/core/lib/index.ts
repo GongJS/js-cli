@@ -2,6 +2,8 @@ import { log } from '@js-cli/utils'
 import semver from 'semver'
 import colors from 'colors'
 import rootCheck from 'root-check'
+import os from 'os'
+import { pathExists } from 'path-exists'
 import { LOWEST_NODE_VERSION} from '../../../const'
 const pkg = require('../package.json')
 
@@ -10,8 +12,11 @@ const core = () => {
         checkPkgVersion()
         checkNodeVersion()
         rootCheck()
-    }   catch (e) {
-        log.error('core', (e as Error).message)
+        checkUserHome()
+    }  catch (e) {
+        if (e instanceof Error) {
+            log.error('core', e.message)
+        }    
     }
 }
 
@@ -26,5 +31,12 @@ const checkNodeVersion = () => {
         throw new Error(colors.red(`js-cli 需要安装 v${lowestVersion} 以上 node 版本`))
     }
     console.log(process.version)
+}
+
+const checkUserHome = () => {
+    const usrHome = os.homedir()
+    if (!usrHome || !pathExists(usrHome)) {
+        throw new Error(colors.red('当前登录用户主目录不存在'))
+    }
 }
 export default core
