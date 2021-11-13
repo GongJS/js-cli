@@ -21,8 +21,10 @@
   "dependencies": {
     "@js-cli/utils": "workspace:^1.0.0",
     "@types/dotenv": "^8.2.0",
+    "@types/minimist": "^1.2.2",
     "dotenv": "^10.0.0",
     "import-local": "^3.0.3",
+    "minimist": "^1.2.5",
     "root-check": "1.0.0"
   },
   "devDependencies": {

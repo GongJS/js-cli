@@ -6,6 +6,7 @@ import os from 'os'
 import pathExists from 'path-exists'
 import path from 'path'
 import dotenv from 'dotenv'
+import minimist from 'minimist'
 import { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } from '../../../const'
 
 const pkg = require('../package.json')
@@ -17,6 +18,7 @@ const core = () => {
         checkNodeVersion()
         rootCheck()
         checkUserHome()
+        checkInputArgs()
         checkEnv()
     }  catch (e) {
         if (e instanceof Error) {
@@ -67,4 +69,16 @@ const createDefaultConfig = () => {
     }
     process.env.CLI_HOME_PATH = cliConfig.cliHome
 }
+
+const checkInputArgs = () => {
+   const args = minimist(process.argv.slice(2))
+   if (args.debug) {
+        log.level = 'verbose'
+        process.env.LOG_LEVEL = 'verbose'
+    } else {
+        process.env.LOG_LEVEL = 'info'
+    }
+    log.level = process.env.LOG_LEVEL
+}
+
 export default core
