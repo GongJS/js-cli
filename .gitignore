@@ -1,0 +1,6 @@
+.idea
+.vscode
+*.log
+*.logs
+node_modules/
+/packages/**/dist/

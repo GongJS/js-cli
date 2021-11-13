@@ -1,0 +1,25 @@
+{
+  "name": "@js-cli/core",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "js-cli": "bin/index.js"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "scripts": {
+    "dev": "npx rollup -c -w",
+    "build": "npx rollup -c"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@js-cli/utils": "workspace:^1.0.0",
+    "import-local": "^3.0.3"
+  }
+}
