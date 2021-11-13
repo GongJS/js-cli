@@ -4,11 +4,12 @@ import colors from 'colors'
 import rootCheck from 'root-check'
 import os from 'os'
 import pathExists from 'path-exists'
+import path from 'path'
+import dotenv from 'dotenv'
 import { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } from '../../../const'
 
 const pkg = require('../package.json')
 const userHome = os.homedir()
-let config = {}
 
 const core = () => {
     try {
@@ -16,6 +17,7 @@ const core = () => {
         checkNodeVersion()
         rootCheck()
         checkUserHome()
+        checkEnv()
     }  catch (e) {
         if (e instanceof Error) {
             log.error('core', e.message)
@@ -24,7 +26,7 @@ const core = () => {
 }
 
 const checkPkgVersion = () => {
-    log.info('js-cli', pkg.version)
+    log.info('version', pkg.version)
 }
 
 const checkNodeVersion = () => {
@@ -42,4 +44,27 @@ const checkUserHome = () => {
     }
 }
 
+const checkEnv = async () => {
+    const dotenvPath = path.resolve(userHome, '.env')
+    if (pathExists.sync(dotenvPath)) {
+        dotenv.config({
+            path: dotenvPath
+        })
+    }
+    createDefaultConfig()
+    log.verbose('环境变量', process.env.CLI_HOME_PATH as string)
+}
+
+const createDefaultConfig = () => {
+    const cliConfig = {
+        home: userHome,
+        cliHome: ''
+    }
+    if (process.env.CLI_HOME) {
+        cliConfig['cliHome'] = path.join(userHome, process.env.CLI_HOME)
+    } else {
+        cliConfig['cliHome'] = path.join(userHome, DEFAULT_CLI_HOME)
+    }
+    process.env.CLI_HOME_PATH = cliConfig.cliHome
+}
 export default core
