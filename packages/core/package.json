@@ -20,6 +20,10 @@
   "license": "ISC",
   "dependencies": {
     "@js-cli/utils": "workspace:^1.0.0",
-    "import-local": "^3.0.3"
+    "import-local": "^3.0.3",
+    "root-check": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/root-check": "^1.0.0"
   }
 }

@@ -1,12 +1,18 @@
 import { log } from '@js-cli/utils'
 import semver from 'semver'
 import colors from 'colors'
+import rootCheck from 'root-check'
 import { LOWEST_NODE_VERSION} from '../../../const'
 const pkg = require('../package.json')
 
 const core = () => {
-    checkPkgVersion()
-    checkNodeVersion()
+    try {
+        checkPkgVersion()
+        checkNodeVersion()
+        rootCheck()
+    }   catch (e) {
+        log.error('core', (e as Error).message)
+    }
 }
 
 const checkPkgVersion = () => {
