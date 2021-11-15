@@ -1,4 +1,5 @@
 import { log, http } from '@js-cli/utils'
+import exec from '@js-cli/exec'
 import semver from 'semver'
 import colors from 'colors'
 import rootCheck from 'root-check'
@@ -30,7 +31,7 @@ const prepare = async() => {
     rootCheck()
     checkUserHome()
     checkEnv()
-    await checkGlobalUpdate()
+    // await checkGlobalUpdate()
 }
 const checkPkgVersion = () => {
     log.info('package', pkg.version)
@@ -95,9 +96,7 @@ const registerCommander = () => {
     program
         .command('init [projectName]')
         .option('-f, --force', '是否强制初始化项目', false)
-        .action(() => {
-            console.log('action')
-        })
+        .action(exec)
 
     program.on('option:targetPath', function() {
        process.env.CLI_TARGET_PATH = program.opts().targetPath

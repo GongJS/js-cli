@@ -37,6 +37,7 @@ importers:
 
   packages/core:
     specifiers:
+      '@js-cli/exec': workspace:^1.0.0
       '@js-cli/utils': workspace:^1.0.0
       '@types/commander': ^2.12.2
       '@types/dotenv': ^8.2.0
@@ -46,6 +47,7 @@ importers:
       import-local: ^3.0.3
       root-check: 1.0.0
     dependencies:
+      '@js-cli/exec': link:../exec
       '@js-cli/utils': link:../utils
       '@types/commander': 2.12.2
       '@types/dotenv': 8.2.0
@@ -55,6 +57,12 @@ importers:
       root-check: 1.0.0
     devDependencies:
       '@types/root-check': 1.0.0
+
+  packages/exec:
+    specifiers:
+      '@js-cli/utils': workspace:^1.0.0
+    dependencies:
+      '@js-cli/utils': link:../utils
 
   packages/utils:
     specifiers:
