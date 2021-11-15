@@ -12,14 +12,17 @@ const exec = (...args: any[]) => {
     const cmdName = cmdObj.name()
     const packageName = SETTINGS[cmdName as keyof typeof SETTINGS]
     const packageVersion = 'latest'
+    if (!targetPath) {
+        targetPath = process.cwd() // 生成缓存路径
+    }
     pkg = new Package({
         packageName, 
         packageVersion,
         targetPath,
-        storePath: storeDir
     })
     log.verbose('targetPath', targetPath)
-    log.verbose('homePath', homePath)
+    log.verbose('homePath', homePath!)
+    console.log(pkg.getRootFilePath())
 }
 
 export default exec;
