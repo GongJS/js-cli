@@ -33,7 +33,7 @@ export default [
     {
         input: "lib/index.ts",
         output: [
-            { file: pkg.main, format: "cjs", exports: "auto" },
+            { file: pkg.main, format: "cjs" },
             { file: pkg.module, format: "es" },
         ],
         plugins: [typescript({ tsconfig: "./tsconfig.json" })],

@@ -17,6 +17,10 @@
   "license": "ISC",
   "dependencies": {
     "@js-cli/utils": "workspace:^1.0.0",
+    "npminstall": "^4.11.0",
     "pkg-dir": "^5.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^4.1.0"
   }
 }

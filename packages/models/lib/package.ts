@@ -1,13 +1,16 @@
-import { isObject, formatPath } from '@js-cli/utils'
+import { isObject, formatPath, http } from '@js-cli/utils'
 import pkgDir from 'pkg-dir'
 import path from 'path'
 interface PackageOptions {
     targetPath: string;
+    storeDir: string;
     packageName: string;
     packageVersion: string;
 }
+const npminstall = require('npminstall')
 class Package {
     public targetPath: string;
+    public storeDir: string;
     public packageName: string;
     public packageVersion: string;
     constructor(options: PackageOptions) {
@@ -18,16 +21,24 @@ class Package {
             throw new Error('Package 类的 options 参数必需为对象')
         }
         this.targetPath = options.targetPath;
+        this.storeDir = options.storeDir;
         this.packageName = options.packageName;
         this.packageVersion = options.packageVersion;
     }
 
     exists() {
-
+        return false
     }
 
     install() {
-
+        return npminstall({
+            root: this.targetPath,
+            storeDir: this.storeDir,
+            registry: http.getDefaultRegistry(),
+            pkgs: [
+                {name: this.packageName, version: this.packageVersion}
+            ]
+        })
     }
 
     update() {
