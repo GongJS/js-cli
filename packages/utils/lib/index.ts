@@ -1,3 +1,7 @@
 import log from './log';
 import * as http from './getNpmInfo'
-export { log, http };
+
+const isObject = (o: any) => {
+    return Object.prototype.toString.call(o) === '[object Object]'
+}
+export { log, http, isObject };

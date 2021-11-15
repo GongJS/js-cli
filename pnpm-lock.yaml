@@ -60,6 +60,14 @@ importers:
 
   packages/exec:
     specifiers:
+      '@js-cli/models': workspace:^1.0.0
+      '@js-cli/utils': workspace:^1.0.0
+    dependencies:
+      '@js-cli/models': link:../models
+      '@js-cli/utils': link:../utils
+
+  packages/models:
+    specifiers:
       '@js-cli/utils': workspace:^1.0.0
     dependencies:
       '@js-cli/utils': link:../utils
