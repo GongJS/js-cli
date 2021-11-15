@@ -38,17 +38,21 @@ importers:
   packages/core:
     specifiers:
       '@js-cli/utils': workspace:^1.0.0
+      '@types/commander': ^2.12.2
       '@types/dotenv': ^8.2.0
       '@types/minimist': ^1.2.2
       '@types/root-check': ^1.0.0
+      commander: ^8.3.0
       dotenv: ^10.0.0
       import-local: ^3.0.3
       minimist: ^1.2.5
       root-check: 1.0.0
     dependencies:
       '@js-cli/utils': link:../utils
+      '@types/commander': 2.12.2
       '@types/dotenv': 8.2.0
       '@types/minimist': 1.2.2
+      commander: 8.3.0
       dotenv: 10.0.0
       import-local: 3.0.3
       minimist: 1.2.5
@@ -140,6 +144,13 @@ packages:
     dependencies:
       colors: 1.4.0
     dev: true
+
+  /@types/commander/2.12.2:
+    resolution: {integrity: sha512-0QEFiR8ljcHp9bAbWxecjVRuAMr16ivPiGOw6KFQBVrVd0RQIcM3xKdRisH2EDWgVWujiYtHwhSkSUoAAGzH7Q==}
+    deprecated: This is a stub types definition for commander (https://github.com/tj/commander.js). commander provides its own type definitions, so you don't need @types/commander installed!
+    dependencies:
+      commander: 8.3.0
+    dev: false
 
   /@types/dotenv/8.2.0:
     resolution: {integrity: sha512-ylSC9GhfRH7m1EUXBXofhgx4lUWmFeQDINW5oLuS+gxWdfUeW4zJdeVTYVkexEW+e2VUvlZR2kGnGGipAWR7kw==}
@@ -267,6 +278,11 @@ packages:
   /colors/1.4.0:
     resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
     engines: {node: '>=0.1.90'}
+
+  /commander/8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    engines: {node: '>= 12'}
+    dev: false
 
   /commondir/1.0.1:
     resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=}
