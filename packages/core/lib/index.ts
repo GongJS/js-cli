@@ -6,7 +6,6 @@ import os from 'os'
 import pathExists from 'path-exists'
 import path from 'path'
 import dotenv from 'dotenv'
-import minimist from 'minimist'
 import commander from 'commander'
 import { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } from '../../../const'
 
@@ -14,15 +13,9 @@ const pkg = require('../package.json')
 const userHome = os.homedir()
 const program = new commander.Command()
 
-const core = () => {
+const core = async () => {
     try {
-        checkPkgVersion()
-        checkNodeVersion()
-        rootCheck()
-        checkUserHome()
-        checkInputArgs()
-        checkEnv()
-        checkGlobalUpdate()
+        await prepare()
         registerCommander()
     }  catch (e) {
         if (e instanceof Error) {
@@ -31,8 +24,16 @@ const core = () => {
     }
 }
 
+const prepare = async() => {
+    checkPkgVersion()
+    checkNodeVersion()
+    rootCheck()
+    checkUserHome()
+    checkEnv()
+    await checkGlobalUpdate()
+}
 const checkPkgVersion = () => {
-    log.info('version', pkg.version)
+    log.info('package', pkg.version)
 }
 
 const checkNodeVersion = () => {
@@ -41,7 +42,7 @@ const checkNodeVersion = () => {
     if (!semver.gte(currentVersion, lowestVersion)) {
         throw new Error(colors.red(`js-cli 需要安装 v${lowestVersion} 以上 node 版本`))
     }
-    console.log(process.version)
+    log.info('node', process.version)
 }
 
 const checkUserHome = () => {
@@ -72,17 +73,6 @@ const createDefaultConfig = () => {
         cliConfig['cliHome'] = path.join(userHome, DEFAULT_CLI_HOME)
     }
     process.env.CLI_HOME_PATH = cliConfig.cliHome
-}
-
-const checkInputArgs = () => {
-   const args = minimist(process.argv.slice(2))
-   if (args.debug) {
-        log.level = 'verbose'
-        process.env.LOG_LEVEL = 'verbose'
-    } else {
-        process.env.LOG_LEVEL = 'info'
-    }
-    log.level = process.env.LOG_LEVEL
 }
 
 const checkGlobalUpdate = async () => {
@@ -132,7 +122,7 @@ const registerCommander = () => {
     })
 
     program.parse(process.argv);
-    
+
     if (program.args && program.args.length < 1) {
         program.outputHelp()
     }
