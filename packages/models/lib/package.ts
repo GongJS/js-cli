@@ -86,15 +86,22 @@ class Package {
         return path.resolve(this.storeDir, `_${this.cacheFilePathPrefix}@${this.packageVersion}@${this.packageName}`)
     }
     
-    getRootFilePath() {
-        const dir = pkgDir.sync(this.targetPath)
+    private _getRootFilePath(targetPath: string) {
+        const dir = pkgDir.sync(targetPath)
         if (dir) {
-            const pkgFile = require(path.join(dir, 'package.json'))
+            const pkgFile = require(path.resolve(dir, 'package.json'))
             if (pkgFile && pkgFile.main) {
-                return formatPath(path.resolve(dir, pkgFile.main))
+                return path.resolve(dir, pkgFile.main)
             }
         }
         return null
+    }
+    getRootFilePath() {
+        if (this.storeDir) {
+            return this._getRootFilePath(this.cacheFilePath)
+        } else {
+           return this._getRootFilePath(this.targetPath)
+        }
     }
 }
 
