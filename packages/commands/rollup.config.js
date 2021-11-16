@@ -9,7 +9,7 @@ export default [
     {
         input: "lib/index.ts",
         output: {
-            name: "@js/models",
+            name: "@js-cli/commands",
             file: pkg.browser,
             format: "umd",
         },

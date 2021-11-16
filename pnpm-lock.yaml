@@ -39,8 +39,24 @@ importers:
       tslib: 2.3.1
       typescript: 4.4.4
 
+  packages/commands:
+    specifiers:
+      '@js-cli/models': workspace:^1.0.0
+      '@js-cli/utils': workspace:^1.0.0
+      '@rollup/plugin-json': ^4.1.0
+      npminstall: ^4.11.0
+      pkg-dir: ^5.0.0
+    dependencies:
+      '@js-cli/models': link:../models
+      '@js-cli/utils': link:../utils
+      npminstall: 4.11.0
+      pkg-dir: 5.0.0
+    devDependencies:
+      '@rollup/plugin-json': 4.1.0_rollup@2.59.0
+
   packages/core:
     specifiers:
+      '@js-cli/commands': workspace:^1.0.0
       '@js-cli/exec': workspace:^1.0.0
       '@js-cli/utils': workspace:^1.0.0
       '@types/commander': ^2.12.2
@@ -51,6 +67,7 @@ importers:
       import-local: ^3.0.3
       root-check: 1.0.0
     dependencies:
+      '@js-cli/commands': link:../commands
       '@js-cli/exec': link:../exec
       '@js-cli/utils': link:../utils
       '@types/commander': 2.12.2

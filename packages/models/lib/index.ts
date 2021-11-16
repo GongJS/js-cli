@@ -1,2 +1,3 @@
 import Package from './package'
-export { Package }
+import Command from './command'
+export { Package, Command }
