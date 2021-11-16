@@ -6,7 +6,6 @@ abstract class Command {
     public _argv: any[]
     public _cmd: any
     constructor(argv: any[]) {
-        log.verbose('Command Constructor', argv as any)
         this._cmd = ''
         if (!argv) {
             throw new Error('参数不能为空')

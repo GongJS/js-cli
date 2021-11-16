@@ -8,7 +8,6 @@ import pathExists from 'path-exists'
 import path from 'path'
 import dotenv from 'dotenv'
 import commander from 'commander'
-import { init } from '@js-cli/commands'
 import { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } from '../../../const'
 
 const pkg = require('../package.json')
@@ -97,7 +96,7 @@ const registerCommander = () => {
     program
         .command('init [projectName]')
         .option('-f, --force', '是否强制初始化项目', false)
-        .action(init as any)
+        .action(exec)
 
     program.on('option:targetPath', function() {
        process.env.CLI_TARGET_PATH = program.opts().targetPath
