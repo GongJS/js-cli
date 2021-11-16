@@ -3,7 +3,7 @@ import { Package } from '@js-cli/models'
 import path from 'path'
 
 const SETTINGS = {
-    init: '@gdx-cli/init'
+    init: '@js-cli/core'
 }
 const CACHE_DIR = 'dependencies'
 

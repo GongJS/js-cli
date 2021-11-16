@@ -25,7 +25,7 @@ export const getDefaultRegistry = (isOriginal = false) => {
     return isOriginal ? 'https://registry.npm.taobao.org' : 'https://registry.npmjs.org'
 }
 
-const getNpmVersions = async (appName: string, registry: string) => {
+const getNpmVersions = async (appName: string, registry = '') => {
     const data = await getNpmInfo(appName, registry)
     if (data) {
         return Object.keys(data.versions)
@@ -47,4 +47,12 @@ const getSemverVersions = (baseVersion: string, versions: string[]) => {
     return semverSort.desc(versions.filter(version =>
         semver.satisfies(version, `^${baseVersion}`)
     ))
+}
+
+export const getNpmLatestVersion = async (npmName: string, registry = '') =>{
+    const versions = await getNpmVersions(npmName)
+    if (versions) {
+        return semverSort.desc(versions)[0]
+    }
+    return ''
 }
