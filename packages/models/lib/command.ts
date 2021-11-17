@@ -1,6 +1,5 @@
 import { log } from '@js-cli/utils'
 import semver from 'semver'
-
 const LOWEST_NODE_VERSION = '12.0.0'
 abstract class Command {
     public _argv: any[]

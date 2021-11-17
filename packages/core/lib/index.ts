@@ -1,5 +1,4 @@
 import { log, http } from '@js-cli/utils'
-import exec from '@js-cli/exec'
 import semver from 'semver'
 import colors from 'colors'
 import rootCheck from 'root-check'
@@ -8,11 +7,12 @@ import pathExists from 'path-exists'
 import path from 'path'
 import dotenv from 'dotenv'
 import commander from 'commander'
-import { LOWEST_NODE_VERSION, DEFAULT_CLI_HOME } from '../../../const'
+import { DEFAULT_CLI_HOME } from '../../../const'
 
 const pkg = require('../package.json')
 const userHome = os.homedir()
 const program = new commander.Command()
+const exec = require('@js-cli/exec')
 
 const core = async () => {
     try {
@@ -27,7 +27,6 @@ const core = async () => {
 
 const prepare = async() => {
     checkPkgVersion()
-    checkNodeVersion()
     rootCheck()
     checkUserHome()
     checkEnv()
@@ -35,15 +34,6 @@ const prepare = async() => {
 }
 const checkPkgVersion = () => {
     log.info('package', pkg.version)
-}
-
-const checkNodeVersion = () => {
-    const currentVersion = process.version
-    const lowestVersion = LOWEST_NODE_VERSION
-    if (!semver.gte(currentVersion, lowestVersion)) {
-        throw new Error(colors.red(`js-cli 需要安装 v${lowestVersion} 以上 node 版本`))
-    }
-    log.info('node', process.version)
 }
 
 const checkUserHome = () => {

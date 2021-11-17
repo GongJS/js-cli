@@ -1,4 +1,4 @@
-import { log, exec as spawn } from '@js-cli/utils'
+import { log, spawn } from '@js-cli/utils'
 import { Package } from '@js-cli/models'
 import path from 'path'
 
