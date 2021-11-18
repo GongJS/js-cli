@@ -1,9 +1,12 @@
 import { Command } from '@js-cli/models'
-import { log, kebabCase } from '@js-cli/utils'
+import { log, kebabCase, sleep, spinnerStart } from '@js-cli/utils'
+import { Package } from '@js-cli/models'
 import fs from 'fs'
 import fse from 'fs-extra'
 import inquirer from 'inquirer'
 import semver from 'semver'
+import path from 'path'
+import os from 'os'
 import getProjectTemplate from './getProjectTemplate'
 interface ProjectInfoType {
     projectName: string
@@ -25,13 +28,22 @@ interface TemplateInfoType {
     tag: string[],
     ignore: string[]
 }
+
+interface TemplateNpmInfoType {
+    exists: () => Promise<boolean>
+    install: () => void
+    update: () => void
+}
 const TYPE_PROJECT = 'project'
 const TYPE_COMPONENT = 'component'
+const userHome = os.homedir()
 class InitCommand extends Command {
     public projectName: string
     public force: boolean
     public projectInfo: any
-    public template: any[]
+    public template: TemplateInfoType[]
+    public templateInfo!: TemplateInfoType
+    public templateNpm!: TemplateNpmInfoType
     constructor(args: any[]) {
         super(args)
         this.projectName = ''
@@ -61,7 +73,46 @@ class InitCommand extends Command {
         }
     }
     
-    async downloadTemplate() {}
+    async downloadTemplate() {
+        const { projectTemplate } = this.projectInfo
+        this.templateInfo = this.template.find(item => item.npmName === projectTemplate)!
+        const targetPath = path.resolve(userHome, '.js-cli', 'template')
+        const storeDir = path.resolve(userHome, '.js-cli', 'template', 'node_modules')
+        const { npmName, version } = this.templateInfo
+        this.templateNpm = new Package({
+            targetPath,
+            storeDir,
+            packageName: npmName,
+            packageVersion: version
+        })
+        if (! (await this.templateNpm.exists())) {
+            const spinner = spinnerStart('正在下载模板...')
+            await sleep()
+            try {
+                await this.templateNpm.install()
+            } catch (e) {
+                throw e
+            } finally {
+                spinner.stop(true)
+                if (await this.templateNpm.exists()) {
+                    log.success('下载模板成功')
+                }
+            }
+        } else {
+            const spinner = spinnerStart('正在更新模板...')
+            await sleep()
+            try {
+                await this.templateNpm.update()
+            } catch (e) {
+                throw e
+            } finally {
+                spinner.stop(true)
+                if (await this.templateNpm.exists()) {
+                    log.success('模板更新成功')
+                }
+            }
+        }
+    }
 
     async installTemplate() {}
 
