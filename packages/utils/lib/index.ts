@@ -2,6 +2,7 @@ import path from 'path'
 import cp from 'child_process'
 import log from './log';
 import * as http from './getNpmInfo'
+import request from './request';
 
 var KEBAB_REGEX = /[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g;
 
@@ -59,4 +60,4 @@ const kebabCase = (str: string) => {
 	});
 };
 
-export { log, http, isObject, formatPath, spawn, execAsync, spinnerStart, sleep, kebabCase };
+export { log, http, isObject, formatPath, spawn, execAsync, spinnerStart, sleep, kebabCase, request };

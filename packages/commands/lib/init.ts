@@ -4,6 +4,7 @@ import fs from 'fs'
 import fse from 'fs-extra'
 import inquirer from 'inquirer'
 import semver from 'semver'
+import getProjectTemplate from './getProjectTemplate'
 interface ProjectInfoType {
     projectName: string
     name: string
@@ -14,6 +15,16 @@ interface ProjectInfoType {
     componentDescription: string
 }
 
+interface TemplateInfoType {
+    name: string
+    npmName: string,
+    version: string,
+    type: 'normal' | 'custom',
+    installCommand: string,
+    startCommand: string,
+    tag: string[],
+    ignore: string[]
+}
 const TYPE_PROJECT = 'project'
 const TYPE_COMPONENT = 'component'
 class InitCommand extends Command {
@@ -54,10 +65,20 @@ class InitCommand extends Command {
 
     async installTemplate() {}
 
-    async createTemplateChoices() {}
+    createTemplateChoices() {
+        return this.template.map(item => ({
+            value: item.npmName,
+            name: item.name
+        }))
+    }
 
     async prepare() {
         const localPath = process.cwd()
+        const template = (await getProjectTemplate()) as unknown as TemplateInfoType[]
+        if (!template || template.length === 0) {
+            throw new Error('项目模版不存在')
+        }
+        this.template = template
         if (!this.isDirEmpty(localPath)) {
             let ifContinue = false
             if (!this.force) {
