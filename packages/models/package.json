@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/utils": "workspace:^1.0.0",
+    "@js-cli/utils": "^1.0.1",
     "npminstall": "^4.11.0",
     "pkg-dir": "^5.0.0"
   },

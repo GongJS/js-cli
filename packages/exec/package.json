@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/models": "workspace:^1.0.0",
-    "@js-cli/utils": "workspace:^1.0.0"
+    "@js-cli/models": "^1.0.0",
+    "@js-cli/utils": "^1.0.1"
   }
 }
