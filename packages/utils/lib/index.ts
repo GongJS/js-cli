@@ -29,7 +29,7 @@ const spawn = (command: string, args: string[], options = {}) => {
     return cp.spawn(cmd, cmdArgs, options || {})
 }
 
-const execAsync = (command: string, args: string[], options = {}) => {
+const execSpawn = (command: string, args: string[], options = {}) => {
     return new Promise(((resolve, reject) => {
         const p = spawn(command, args, options)
         p.on('error', e => {
@@ -60,4 +60,4 @@ const kebabCase = (str: string) => {
 	});
 };
 
-export { log, http, isObject, formatPath, spawn, execAsync, spinnerStart, sleep, kebabCase, request };
+export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request };

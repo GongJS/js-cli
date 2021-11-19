@@ -1,5 +1,5 @@
 import { Command } from '@js-cli/models'
-import { log, kebabCase, sleep, spinnerStart } from '@js-cli/utils'
+import { log, kebabCase, sleep, spinnerStart, execSpawn } from '@js-cli/utils'
 import { Package } from '@js-cli/models'
 import fs from 'fs'
 import fse from 'fs-extra'
@@ -7,7 +7,16 @@ import inquirer from 'inquirer'
 import semver from 'semver'
 import path from 'path'
 import os from 'os'
+import glob from 'glob'
+import ejs from 'ejs'
 import getProjectTemplate from './getProjectTemplate'
+
+const TYPE_PROJECT = 'project'
+const TYPE_COMPONENT = 'component'
+const TEMPLATE_TYPE_NORMAL = 'normal'
+const TEMPLATE_TYPE_CUSTOM = 'custom'
+const WHITE_COMMAND = ['npm', 'cnpm']
+const userHome = os.homedir()
 interface ProjectInfoType {
     projectName: string
     name: string
@@ -33,10 +42,10 @@ interface TemplateNpmInfoType {
     exists: () => Promise<boolean>
     install: () => void
     update: () => void
+    getRootFilePath: () => string | null
+    cacheFilePath: string
 }
-const TYPE_PROJECT = 'project'
-const TYPE_COMPONENT = 'component'
-const userHome = os.homedir()
+
 class InitCommand extends Command {
     public projectName: string
     public force: boolean
@@ -85,7 +94,7 @@ class InitCommand extends Command {
             packageName: npmName,
             packageVersion: version
         })
-        if (! (await this.templateNpm.exists())) {
+        if (!(await this.templateNpm.exists())) {
             const spinner = spinnerStart('正在下载模板...')
             await sleep()
             try {
@@ -114,7 +123,130 @@ class InitCommand extends Command {
         }
     }
 
-    async installTemplate() {}
+    async installTemplate() {
+        if (this.templateInfo) {
+            if (this.templateInfo.type) {
+                if (!this.templateInfo.type) {
+                    this.templateInfo.type = TEMPLATE_TYPE_NORMAL
+                }
+                if (this.templateInfo.type === TEMPLATE_TYPE_NORMAL) {
+                   await this.installNormalTemplate()
+                } else if (this.templateInfo.type === TEMPLATE_TYPE_CUSTOM) {
+                    await this.installCustomTemplate()
+                } else {
+                    throw new Error('无法识别项目模板类型')
+                }
+            }
+       } else {
+           throw new Error('项目模板信息不存在！')
+       }
+    }
+
+    async installNormalTemplate() {
+        // 拷贝模板至当前目录
+        let spinner = spinnerStart('正在安装模板')
+        try {
+            const templatePath = path.resolve(this.templateNpm.cacheFilePath, 'template')
+            const targetPath = process.cwd()
+            fse.ensureDirSync(templatePath)
+            fse.ensureDirSync(targetPath)
+            fse.copySync(templatePath, targetPath)
+        } catch(e) {
+            throw e
+        } finally {
+            spinner.stop(true)
+            log.success('模板安装成功')
+        }
+        const { installCommand, startCommand } = this.templateInfo
+        const templateIgnore = this.templateInfo.ignore || []
+        const ignore = ['**/node_modules/**', ...templateIgnore]
+        await this.ejsRender({ ignore })
+        await this.execCommand(installCommand, '依赖安装失败')
+        await this.execCommand(startCommand, '项目启动失败')
+    }
+
+    async installCustomTemplate() {
+        // 查询自定义模版入口信息
+        if (await this.templateNpm.exists()) {
+            const rootFile = this.templateNpm.getRootFilePath()
+            if (rootFile && fs.existsSync(rootFile)) {
+                log.notice('','开始执行自定义模板')
+                const templatePath = path.resolve(this.templateNpm.cacheFilePath, 'template')
+                const options = {
+                    templateInfo: this.templateInfo,
+                    projectInfo: this.projectInfo,
+                    sourcePath: templatePath,
+                    targetPath: process.cwd()
+                }
+                const code = `require('${rootFile}')(${JSON.stringify(options)})`
+                await execSpawn('node', ['-e', code], {
+                    stdio: 'inherit',
+                    cwd: process.cwd()
+                })
+                log.success('自定义模板安装成功')
+            } else {
+                throw new Error('自定义模板入口文件不存在')
+            }
+        }
+    }
+    async execCommand(command: string, errMsg: string) {
+        let ret
+        if (command) {
+            const cmdArray = command.split(' ')
+            const cmd = this.checkCommand(cmdArray[0])
+            if (!cmd) {
+                throw new Error('命令不存在：' + command)
+            }
+            const args = cmdArray.slice(1)
+            ret = await execSpawn(cmd, args, {
+                stdio: 'inherit',
+                cwd: process.cwd()
+            })
+            if (ret !== 0) {
+                throw new  Error(errMsg)
+            }
+        }
+    }
+
+    checkCommand(cmd: string) {
+        if (WHITE_COMMAND.includes(cmd)) {
+            return cmd
+        }
+        return null
+    }
+
+    async ejsRender(options: { ignore: string[] }) {
+        const dir = process.cwd()
+        const projectInfo = this.projectInfo
+        return new Promise((resolve, reject) => {
+            glob('**', {
+                cwd: dir,
+                ignore: options.ignore || '',
+                nodir: true
+            }, (err, files) => {
+                if (err) {
+                    reject(err)
+                }
+                Promise.all(files.map(file => {
+                    const filePath = path.join(dir, file)
+                    return new Promise((resolve1, reject1) => {
+                        ejs.renderFile(filePath, projectInfo, {}, (err, result) => {
+                            if (err) {
+                                reject1(err)
+                            } else {
+                                fse.writeFileSync(filePath, result)
+                                resolve1(result)
+                            }
+                        })
+                    })
+                })).then(() => {
+                    resolve(null)
+                }).catch(() => {
+                    reject(err)
+                })
+            })
+        })
+    }
 
     createTemplateChoices() {
         return this.template.map(item => ({

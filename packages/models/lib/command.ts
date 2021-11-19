@@ -37,7 +37,7 @@ abstract class Command {
         const currentVersion = process.version
         const lowestVersion = LOWEST_NODE_VERSION
         if (!semver.gte(currentVersion, lowestVersion)) {
-            throw new Error(log.warn('checkNodeVersion',  `gdx-cli 需要安装 v${lowestVersion} 以上 node 版本`)!)
+            throw new Error(log.warn('checkNodeVersion',  `js-cli 需要安装 v${lowestVersion} 以上 node 版本`)!)
         }
         console.log(process.version)
     }
