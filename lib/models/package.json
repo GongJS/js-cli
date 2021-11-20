@@ -1,0 +1,31 @@
+{
+  "name": "@js-cli/models",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "scripts": {
+    "dev": "npx rollup -c -w",
+    "build": "npx rollup -c"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@js-cli/utils": "~1.0.1",
+    "npminstall": "^4.11.0",
+    "pkg-dir": "^5.0.0",
+    "semver": "^7.3.5",
+    "fs-extra": "^10.0.0",
+    "path-exists": "4.0.0"
+  },
+  "devDependencies": {
+    "@types/semver": "^7.3.9",
+    "@types/fs-extra": "^9.0.13",
+    "@types/path-exists": "^4.0.2"
+  }
+}

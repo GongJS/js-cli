@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@js-cli/models",
+      "comment": "test",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@js-cli/models"
+}

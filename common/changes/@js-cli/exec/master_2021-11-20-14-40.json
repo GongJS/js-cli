@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@js-cli/exec",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@js-cli/exec"
+}
