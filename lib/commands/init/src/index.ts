@@ -231,6 +231,7 @@ class InitCommand extends Command {
                     return new Promise((resolve1, reject1) => {
                         ejs.renderFile(filePath, projectInfo, {}, (err, result) => {
                             if (err) {
+                                log.verbose('ejsRender', err.toString())
                                 reject1(err)
                             } else {
                                 fse.writeFileSync(filePath, result)
@@ -256,7 +257,9 @@ class InitCommand extends Command {
 
     async prepare() {
         const localPath = process.cwd()
+        const spinner = spinnerStart('从远程仓库获取模版')
         const template = (await getProjectTemplate()) as unknown as TemplateInfoType[]
+        spinner.stop(true)
         if (!template || template.length === 0) {
             throw new Error('项目模版不存在')
         }
@@ -289,7 +292,7 @@ class InitCommand extends Command {
 
     async getProjectInfo() {
         function isValidName(v: string) {
-            return /^[a-zA-Z]+([-][a-zA-Z][a-zA-Z0-9]*|[_][a-zA-Z][a-zA-Z0-9]*|[a-zA-Z0-9])*$/.test(v)
+            return /^[@a-zA-Z]+([-][a-zA-Z][a-zA-Z0-9]*|[_][a-zA-Z][a-zA-Z0-9]*|[\/][a-zA-Z][a-zA-Z0-9]*|[a-zA-Z0-9])*$/.test(v)
         }
         let projectInfo: Partial<ProjectInfoType> = {}
         let isProjectNameValid = false
@@ -323,7 +326,7 @@ class InitCommand extends Command {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
                         if (!isValidName(v)) {
-                            reject(`合法${title}名称需满足：1.首字符必需为英文字母; 2.尾字符必需为英文或数字，不能为字符;3.字符仅允许'-_'`)
+                            reject(`合法${title}名称需满足：1.首字符必需为英文字母或@字符; 2.尾字符必需为英文或数字，不能为字符; 3.字符仅允许'-_@/'`)
                             return
                         }
                         resolve(true)
