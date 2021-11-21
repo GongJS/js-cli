@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "bin": {
     "js-cli": "bin/index.js"
@@ -20,8 +20,8 @@
   "license": "ISC",
   "dependencies": {
     "@js-cli/commands": "^1.0.1",
-    "@js-cli/exec": "^1.0.0",
-    "@js-cli/utils": "~1.0.1",
+    "@js-cli/exec": "^1.0.1",
+    "@js-cli/utils": "~1.0.2",
     "@types/commander": "^2.12.2",
     "commander": "^8.3.0",
     "dotenv": "^10.0.0",

@@ -1,0 +1,25 @@
+{
+  "name": "@js-cli/core",
+  "entries": [
+    {
+      "version": "1.0.5",
+      "tag": "@js-cli/core_v1.0.5",
+      "date": "Sun, 21 Nov 2021 01:35:45 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "test"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@js-cli/exec\" from `^1.0.0` to `^1.0.1`"
+          },
+          {
+            "comment": "Updating dependency \"@js-cli/utils\" from `~1.0.1` to `~1.0.2`"
+          }
+        ]
+      }
+    }
+  ]
+}

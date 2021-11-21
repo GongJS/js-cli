@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/exec",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/models": "~1.0.0",
-    "@js-cli/utils": "~1.0.1"
+    "@js-cli/models": "~1.0.1",
+    "@js-cli/utils": "~1.0.2"
   }
 }

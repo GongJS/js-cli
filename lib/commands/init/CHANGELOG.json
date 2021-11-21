@@ -1,0 +1,20 @@
+{
+  "name": "@js-cli/init",
+  "entries": [
+    {
+      "version": "1.0.0",
+      "tag": "@js-cli/init_v1.0.0",
+      "date": "Sun, 21 Nov 2021 01:35:45 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@js-cli/models\" from `~1.0.0` to `~1.0.1`"
+          },
+          {
+            "comment": "Updating dependency \"@js-cli/utils\" from `~1.0.1` to `~1.0.2`"
+          }
+        ]
+      }
+    }
+  ]
+}
