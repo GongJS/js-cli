@@ -31,7 +31,7 @@ const prepare = async() => {
     rootCheck()
     checkUserHome()
     checkEnv()
-    // await checkGlobalUpdate()
+    await checkGlobalUpdate()
 }
 const checkPkgVersion = () => {
     log.info('package', pkg.version)
