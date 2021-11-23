@@ -2,6 +2,18 @@
   "name": "@js-cli/core",
   "entries": [
     {
+      "version": "1.0.6",
+      "tag": "@js-cli/core_v1.0.6",
+      "date": "Tue, 23 Nov 2021 07:09:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "开放脚手架版本升级检查功能"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.5",
       "tag": "@js-cli/core_v1.0.5",
       "date": "Sun, 21 Nov 2021 01:35:45 GMT",
