@@ -1,6 +1,13 @@
 # Change Log - @js-cli/core
 
-This log was last generated on Tue, 23 Nov 2021 07:09:13 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Nov 2021 07:19:02 GMT and should not be manually modified.
+
+## 1.0.7
+Tue, 23 Nov 2021 07:19:02 GMT
+
+### Patches
+
+- build
 
 ## 1.0.6
 Tue, 23 Nov 2021 07:09:13 GMT

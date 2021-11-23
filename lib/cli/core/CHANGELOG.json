@@ -2,6 +2,18 @@
   "name": "@js-cli/core",
   "entries": [
     {
+      "version": "1.0.7",
+      "tag": "@js-cli/core_v1.0.7",
+      "date": "Tue, 23 Nov 2021 07:19:02 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "build"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.0.6",
       "tag": "@js-cli/core_v1.0.6",
       "date": "Tue, 23 Nov 2021 07:09:13 GMT",
