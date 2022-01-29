@@ -94,6 +94,10 @@ const registerCommander = () => {
       .option('-f, --force', '是否强制添加模版')
       .action(exec)
 
+    program
+      .command('publish')
+      .action(exec)
+
     program.on('option:targetPath', function() {
        process.env.CLI_TARGET_PATH = program.opts().targetPath
     })

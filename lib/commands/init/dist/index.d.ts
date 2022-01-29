@@ -1,5 +1,5 @@
 import { Command } from '@js-cli/models';
-interface ProjectInfoType {
+export interface ProjectInfoType {
     projectName: string;
     name: string;
     className: string;

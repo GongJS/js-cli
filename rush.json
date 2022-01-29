@@ -424,6 +424,12 @@
       "projectFolder": "lib/commands/add",
       "reviewCategory": "tools",
       "shouldPublish": true
+    },
+    {
+      "packageName": "@js-cli/publish",
+      "projectFolder": "lib/commands/publish",
+      "reviewCategory": "tools",
+      "shouldPublish": true
     }
   ]
 }

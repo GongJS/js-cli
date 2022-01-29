@@ -4,7 +4,8 @@ import path from 'path'
 
 const SETTINGS = {
     init: '@js-cli/init',
-    add: '@js-cli/add'
+    add: '@js-cli/add',
+    publish: '@js-cli/publish'
 }
 const CACHE_DIR = 'dependencies'
 

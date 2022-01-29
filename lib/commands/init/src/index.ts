@@ -16,7 +16,7 @@ const TEMPLATE_TYPE_NORMAL = 'normal'
 const TEMPLATE_TYPE_CUSTOM = 'custom'
 const WHITE_COMMAND = ['npm', 'cnpm']
 const userHome = os.homedir()
-interface ProjectInfoType {
+export interface ProjectInfoType {
     projectName: string
     name: string
     className: string
@@ -80,7 +80,7 @@ class InitCommand extends Command {
             }
         }
     }
-    
+
     async downloadTemplate() {
         const { projectTemplate } = this.projectInfo
         this.templateInfo = this.template.find(item => item.npmName === projectTemplate)!
@@ -177,7 +177,7 @@ class InitCommand extends Command {
                     sourcePath: templatePath,
                     targetPath: process.cwd()
                 }
-                const code = `require('${rootFile}')(${JSON.stringify(options)})`
+                const code = `require('${rootFile}').call(null, ${JSON.stringify(options)})`
                 await execSpawn('node', ['-e', code], {
                     stdio: 'inherit',
                     cwd: process.cwd()
