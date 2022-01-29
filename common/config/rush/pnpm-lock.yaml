@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@js-cli/commands': ^1.0.1
+  '@rush-temp/add': file:./projects/add.tgz
   '@rush-temp/core': file:./projects/core.tgz
   '@rush-temp/exec': file:./projects/exec.tgz
   '@rush-temp/init': file:./projects/init.tgz
@@ -44,6 +45,7 @@ specifiers:
 
 dependencies:
   '@js-cli/commands': 1.0.1
+  '@rush-temp/add': file:projects/add.tgz
   '@rush-temp/core': file:projects/core.tgz
   '@rush-temp/exec': file:projects/exec.tgz
   '@rush-temp/init': file:projects/init.tgz
@@ -2439,8 +2441,16 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
+  file:projects/add.tgz:
+    resolution: {integrity: sha512-j4pGIPu5nHaNiCdr3dSCE9HAh0pfuZOKIUIamDxTH+yLI+2ElM0nGxTUxbX9HDr2H/E9a3Bcm7hpApqJ/kptng==, tarball: file:projects/add.tgz}
+    name: '@rush-temp/add'
+    version: 0.0.0
+    dependencies:
+      rollup-plugin-json: 4.0.0
+    dev: false
+
   file:projects/core.tgz:
-    resolution: {integrity: sha512-1HCDP8k+oc8tfAfBm84+bgQodCtA+cuN8lIrN6uU4/8UU6SrRg68mwBCTG+sccpi2LRXqdzmNCSNn1+g33QcGA==, tarball: file:projects/core.tgz}
+    resolution: {integrity: sha512-IoF47MTlgng9/7ggsJa6Q+qZq/Pb+L5ev+ChV+n1K61tZ0BKcpcuW727COlT/Djv+BRGkbs2xf3VXtK0JpOXSQ==, tarball: file:projects/core.tgz}
     name: '@rush-temp/core'
     version: 0.0.0
     dependencies:
@@ -2464,13 +2474,13 @@ packages:
     dev: false
 
   file:projects/exec.tgz:
-    resolution: {integrity: sha512-W8VrwPEF9UOmYkVuBZ7JGrBPU2BulXAVK6+XYMmQPiTOmpilYTZg6lezITb3zYb8KCgP7DrY3K+Cj1znHPvxYA==, tarball: file:projects/exec.tgz}
+    resolution: {integrity: sha512-OsKKwgXTso52HxfZ5ebpjEdK+9NjkDgLxC4Gtjiv1/igncFzglOGGnDXtlox7ktXITGj9UoOUFLloA8e27XeGQ==, tarball: file:projects/exec.tgz}
     name: '@rush-temp/exec'
     version: 0.0.0
     dev: false
 
   file:projects/init.tgz:
-    resolution: {integrity: sha512-RR3zxM4k8lL/4PeQHv3Qvb7nVP548dFix4L58YsgVsYpXQkxYXwdHJkUtN2FTX8On5VNnz5Qir+ZZbNliexFgQ==, tarball: file:projects/init.tgz}
+    resolution: {integrity: sha512-dQ1tYIl3rGGCwQtShtJ/2XmtsF43v3bbdsrkQd0iN+Yot311QD1x8pz3YXXpvtQ5+3A48D7dlCzzdhFMBIpc8Q==, tarball: file:projects/init.tgz}
     name: '@rush-temp/init'
     version: 0.0.0
     dependencies:
@@ -2493,7 +2503,7 @@ packages:
     dev: false
 
   file:projects/models.tgz:
-    resolution: {integrity: sha512-pcwtocB118DjVlyuMgG0bGDAXbGlvGxywJ64VP7Xx9oVNHfepwy/eC5dK6aHuK0N398oRcXJWTRKg4rEWXrUAQ==, tarball: file:projects/models.tgz}
+    resolution: {integrity: sha512-OqegLIJIuRzclKGud+jJZHMUzJLc2B0cdFwPVq8kYopkc/8Ekq4euY5b+gQcICdzRmAWT5Ly7TBFWcGsOqkHYg==, tarball: file:projects/models.tgz}
     name: '@rush-temp/models'
     version: 0.0.0
     dependencies:

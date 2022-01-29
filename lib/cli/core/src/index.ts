@@ -22,7 +22,7 @@ const core = async () => {
     }  catch (e) {
         if (e instanceof Error) {
             log.error('core', e.message)
-        }    
+        }
     }
 }
 
@@ -88,6 +88,11 @@ const registerCommander = () => {
         .command('init [projectName]')
         .option('-f, --force', '是否强制初始化项目', false)
         .action(exec)
+
+    program
+      .command('add [templateName]')
+      .option('-f, --force', '是否强制添加模版')
+      .action(exec)
 
     program.on('option:targetPath', function() {
        process.env.CLI_TARGET_PATH = program.opts().targetPath

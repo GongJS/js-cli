@@ -3,7 +3,8 @@ import { Package } from '@js-cli/models'
 import path from 'path'
 
 const SETTINGS = {
-    init: '@js-cli/init'
+    init: '@js-cli/init',
+    add: '@js-cli/add'
 }
 const CACHE_DIR = 'dependencies'
 
@@ -55,7 +56,7 @@ const exec = async (..._args: any[]) => {
               }
             })
             args[args.length - 1] = o
-            const code = `require('${rootFile}').init.call(null, ${JSON.stringify(args)})`
+            const code = `require('${rootFile}').${cmdName}.call(null, ${JSON.stringify(args)})`
             const child = spawn('node', ['-e', code], {
                 cwd: process.cwd(),
                 stdio: 'inherit'

@@ -1,0 +1,32 @@
+{
+  "name": "@js-cli/add",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "scripts": {
+    "dev": "npx rollup -c -w",
+    "build": "npx rollup -c"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@js-cli/models": "~1.0.1",
+    "@js-cli/utils": "~1.0.2",
+    "ejs": "^3.1.6",
+    "fs-extra": "^10.0.0",
+    "glob": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^7.2.0",
+    "@types/node": "^17.0.13",
+    "rollup-plugin-json": "^4.0.0"
+  }
+}
