@@ -18,5 +18,8 @@
   "dependencies": {
     "@js-cli/models": "~1.0.1",
     "@js-cli/utils": "~1.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^4.1.0"
   }
 }

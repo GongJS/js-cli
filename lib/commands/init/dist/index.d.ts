@@ -7,6 +7,7 @@ export interface ProjectInfoType {
     projectVersion: string;
     description: string;
     componentDescription: string;
+    dir: string;
 }
 interface TemplateInfoType {
     name: string;

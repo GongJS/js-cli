@@ -1,4 +1,4 @@
-import { Command } from '@js-cli/models'
+import { Command, Git } from '@js-cli/models'
 import { log } from '@js-cli/utils'
 import fse from 'fs-extra'
 import fs from 'fs';
@@ -6,16 +6,26 @@ import path from 'path'
 import { ProjectInfoType } from '@js-cli/init'
 
 class PublishCommand extends Command {
-  public projectInfo: Partial<ProjectInfoType>
-
+  public projectInfo!: Pick<ProjectInfoType, 'name' | 'version'> & {dir: string}
+  public options!: {
+    refreshServer: boolean
+    refreshToken: boolean
+    refreshOwner: boolean
+  }
+  public _argv: any
+  public _cmd: any
   constructor(args: any[]) {
     super(args)
-    this.projectInfo = {}
   }
 
   init() {
     // 处理参数
-    log.verbose('init', this._argv);
+    log.verbose('publish', this._argv, this._cmd);
+    this.options = {
+      refreshServer: this._cmd.refreshServer,
+      refreshToken: this._cmd.refreshToken,
+      refreshOwner: this._cmd.refreshOwner,
+    };
   }
 
   async exec() {
@@ -24,11 +34,14 @@ class PublishCommand extends Command {
       // 1.初始化检查
       this.prepare();
       // 2.Git Flow自动化
+      const git = new Git(this.projectInfo, this.options);
+      await git.prepare(); // 自动化提交准备和代码仓库初始化
+      await git.commit(); // 代码自动化提交
       // 3.云构建和云发布
       const endTime = new Date().getTime();
       log.info('本次发布耗时：', Math.floor((endTime - startTime) / 1000) + '秒');
     } catch (e) {
-      log.error('publish exec', e.message);
+      log.error('',  (e as Error).message);
       if (process.env.LOG_LEVEL === 'verbose') {
         console.log(e);
       }

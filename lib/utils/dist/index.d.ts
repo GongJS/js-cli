@@ -10,4 +10,11 @@ declare const execSpawn: (command: string, args: string[], options?: {}) => Prom
 declare const spinnerStart: (msg?: string, spinnerString?: string) => any;
 declare const sleep: () => void;
 declare const kebabCase: (str: string) => string;
-export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request };
+declare const readFile: (path: string, options?: {}) => string | {
+    type: "Buffer";
+    data: number[];
+} | null;
+declare const writeFile: (path: string, data: any, { rewrite }?: {
+    rewrite?: boolean | undefined;
+}) => boolean;
+export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request, readFile, writeFile };

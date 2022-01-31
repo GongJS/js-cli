@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs'
 import cp from 'child_process'
 import log from './log';
 import * as http from './getNpmInfo'
@@ -60,4 +61,31 @@ const kebabCase = (str: string) => {
 	});
 };
 
-export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request };
+const readFile = (path: string, options = {}) => {
+    if (fs.existsSync(path)) {
+        const buffer = fs.readFileSync(path);
+        if (buffer) {
+            if (options.toJson) {
+                return buffer.toJSON();
+            } else {
+                return buffer.toString();
+            }
+        }
+    }
+    return null;
+}
+
+const writeFile = (path: string, data: any, { rewrite = true } = {}) => {
+    if (fs.existsSync(path)) {
+        if (rewrite) {
+            fs.writeFileSync(path, data);
+            return true;
+        }
+        return false;
+    } else {
+        fs.writeFileSync(path, data);
+        return true;
+    }
+}
+
+export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request, readFile, writeFile };

@@ -1,3 +1,4 @@
 import Package from './package';
 import Command from './command';
-export { Package, Command };
+import Git from './git';
+export { Package, Command, Git };
