@@ -1,7 +1,6 @@
 {
-  "name": "@js-cli/models",
-  "version": "1.0.1",
-  "description": "",
+  "name": "@js-cli/git",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
@@ -20,20 +19,9 @@
     "axios": "^0.25.0",
     "fs-extra": "^10.0.0",
     "inquirer": "^8.2.0",
-    "npminstall": "^4.11.0",
-    "path-exists": "4.0.0",
-    "pkg-dir": "^5.0.0",
     "semver": "^7.3.5",
     "simple-git": "^3.1.1",
     "terminal-link": "^2.1.1",
     "user-home": "^3.0.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-json": "^4.1.0",
-    "@types/fs-extra": "^9.0.13",
-    "@types/inquirer": "^8.2.0",
-    "@types/path-exists": "^4.0.2",
-    "@types/semver": "^7.3.9",
-    "@types/user-home": "^2.0.0"
   }
 }

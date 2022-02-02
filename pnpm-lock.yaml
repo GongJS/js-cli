@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@rollup/plugin-commonjs': ^21.0.1
+  '@rollup/plugin-json': ^4.1.0
   '@rollup/plugin-node-resolve': ^13.0.6
   '@rollup/plugin-typescript': ^8.3.0
   '@types/colors': ^1.2.1
@@ -20,6 +21,7 @@ dependencies:
 
 devDependencies:
   '@rollup/plugin-commonjs': 21.0.1_rollup@2.60.0
+  '@rollup/plugin-json': 4.1.0_rollup@2.60.0
   '@rollup/plugin-node-resolve': 13.0.6_rollup@2.60.0
   '@rollup/plugin-typescript': 8.3.0_8237b289b1560ac087923ea403810077
   '@types/colors': 1.2.1
@@ -68,6 +70,15 @@ packages:
       is-reference: 1.2.1
       magic-string: 0.25.7
       resolve: 1.20.0
+      rollup: 2.60.0
+    dev: true
+
+  /@rollup/plugin-json/4.1.0_rollup@2.60.0:
+    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.60.0
       rollup: 2.60.0
     dev: true
 

@@ -1,5 +1,5 @@
 import { log, spawn } from '@js-cli/utils'
-import { Package } from '@js-cli/models'
+import Package from '@js-cli/package'
 import path from 'path'
 
 const SETTINGS = {

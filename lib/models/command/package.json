@@ -1,7 +1,6 @@
 {
-  "name": "@js-cli/exec",
-  "version": "1.0.1",
-  "description": "",
+  "name": "@js-cli/command",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
@@ -17,6 +16,6 @@
   "license": "ISC",
   "dependencies": {
     "@js-cli/utils": "~1.0.2",
-    "@js-cli/package": "~1.0.0"
+    "semver": "^7.3.5"
   }
 }

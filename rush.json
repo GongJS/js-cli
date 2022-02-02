@@ -396,12 +396,6 @@
        "shouldPublish": true
      },
     {
-      "packageName": "@js-cli/models",
-      "projectFolder": "lib/models",
-      "reviewCategory": "tools",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@js-cli/init",
       "projectFolder": "lib/commands/init",
       "reviewCategory": "tools",
@@ -428,6 +422,24 @@
     {
       "packageName": "@js-cli/publish",
       "projectFolder": "lib/commands/publish",
+      "reviewCategory": "tools",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@js-cli/git",
+      "projectFolder": "lib/models/git",
+      "reviewCategory": "tools",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@js-cli/package",
+      "projectFolder": "lib/models/package",
+      "reviewCategory": "tools",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@js-cli/command",
+      "projectFolder": "lib/models/command",
       "reviewCategory": "tools",
       "shouldPublish": true
     }

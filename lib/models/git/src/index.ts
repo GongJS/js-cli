@@ -107,14 +107,14 @@ class Git {
   }
 
   async pullRemoteMasterAndBranch() {
-    log.info(`合并 [master] -> [${this.branch}]`);
+    log.info('', `合并 [master] -> [${this.branch}]`);
     await this.pullRemoteRepo('master');
     log.success('合并远程 [master] 分支代码成功');
     await this.checkConflicted();
-    log.info('检查远程开发分支');
+    log.info('', '检查远程开发分支');
     const remoteBranchList = await this.getRemoteBranchList();
     if (remoteBranchList.indexOf(this.version) >= 0) {
-      log.info(`合并 [${this.branch}] -> [${this.branch}]`);
+      log.info('', `合并 [${this.branch}] -> [${this.branch}]`);
       await this.pullRemoteRepo(this.branch);
       log.success(`合并远程 [${this.branch}] 分支代码成功`);
       await this.checkConflicted();
@@ -134,7 +134,7 @@ class Git {
   }
 
   async checkStash() {
-    log.info('检查stash记录');
+    log.info('', '检查stash记录');
     const stashList = await this.git.stashList();
     if (stashList.all.length > 0) {
       await this.git.stash(['pop']);
@@ -146,7 +146,7 @@ class Git {
     // 1.获取远程分布分支
     // 版本号规范：release/x.y.z，dev/x.y.z
     // 版本号递增规范：major/minor/patch
-    log.info('获取代码分支');
+    log.info('', '获取代码分支');
     const remoteBranchList = await this.getRemoteBranchList(VERSION_RELEASE);
     let releaseVersion = null;
     if (remoteBranchList && remoteBranchList.length > 0) {
@@ -158,10 +158,10 @@ class Git {
     if (!releaseVersion) {
       this.branch = `${VERSION_DEVELOP}/${devVersion}`;
     } else if (semver.gt(this.version, releaseVersion)) {
-      log.info(`当前版本大于线上最新版本 ${devVersion} >= ${releaseVersion}`);
+      log.info('', `当前版本大于线上最新版本 ${devVersion} >= ${releaseVersion}`);
       this.branch = `${VERSION_DEVELOP}/${devVersion}`;
     } else {
-      log.info('当前线上版本大于本地版本', `${releaseVersion} > ${devVersion}`);
+      log.info('', '当前线上版本大于本地版本', `${releaseVersion} > ${devVersion}`);
       const incType = (await inquirer.prompt({
         type: 'list',
         name: 'incType',
@@ -231,7 +231,7 @@ class Git {
   }
 
   async pullRemoteRepo(branchName: string, options?: any) {
-    log.info(`同步远程${branchName}分支代码`);
+    log.info('', `同步远程${branchName}分支代码`);
     await this.git.pull('origin', branchName, options)
       .catch(err => {
         log.error('pullRemoteRepo', err.message);
@@ -239,7 +239,7 @@ class Git {
   }
 
   async pushRemoteRepo(branchName: string) {
-    log.info('pushRemoteRepo', `推送代码至${branchName}分支`);
+    log.info('', 'pushRemoteRepo', `推送代码至${branchName}分支`);
     await this.git.push('origin', branchName);
     log.success('推送代码成功');
   }
@@ -276,7 +276,7 @@ class Git {
   }
 
   async checkConflicted() {
-    log.info('checkConflicted', '代码冲突检查');
+    log.info('', 'checkConflicted', '代码冲突检查');
     const status = await this.git.status();
     if (status.conflicted.length > 0) {
       throw new Error('当前代码存在冲突，请手动处理合并后再试！');
@@ -294,9 +294,9 @@ class Git {
   }
 
   async initAndAddRemote() {
-    log.info('执行git初始化');
+    log.info('', '执行git初始化');
     await this.git.init();
-    log.info('添加git remote');
+    log.info('', '添加git remote');
     const remotes = await this.git.getRemotes();
     log.verbose('git remotes', JSON.stringify(remotes));
     if (!remotes.find(item => item.name === 'origin')) {
@@ -344,7 +344,6 @@ class Git {
   async checkGitToken() {
     const tokenPath = this.createPath(GIT_TOKEN_FILE);
     let token = readFile(tokenPath);
-    log.success(1111, this.gitServer.getTokenUrl())
     if (!token || this.refreshToken) {
       log.warn('', `token未生成, 请先生成 Github token， ${terminalLink('链接', this.gitServer.getTokenUrl())}`);
       token = (await inquirer.prompt({

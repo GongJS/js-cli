@@ -1,4 +1,5 @@
-import { Command, Package } from '@js-cli/models'
+import Command from '@js-cli/command'
+import Package from '@js-cli/package'
 import { log, kebabCase, sleep, spinnerStart, execSpawn } from '@js-cli/utils'
 import fs from 'fs'
 import fse from 'fs-extra'

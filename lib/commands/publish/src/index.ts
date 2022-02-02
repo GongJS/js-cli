@@ -1,4 +1,5 @@
-import { Command, Git } from '@js-cli/models'
+import Git from '@js-cli/git'
+import Command from '@js-cli/command'
 import { log } from '@js-cli/utils'
 import fse from 'fs-extra'
 import fs from 'fs';

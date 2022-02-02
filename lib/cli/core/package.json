@@ -22,7 +22,6 @@
     "@js-cli/commands": "^1.0.1",
     "@js-cli/exec": "^1.0.1",
     "@js-cli/utils": "~1.0.2",
-    "@types/commander": "^2.12.2",
     "colors": "^1.4.0",
     "commander": "^8.3.0",
     "dotenv": "^10.0.0",
@@ -32,7 +31,7 @@
     "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.1.0",
+    "@types/commander": "^2.12.2",
     "@types/colors": "^1.2.1",
     "@types/dotenv": "^8.2.0",
     "@types/path-exists": "^4.0.2",
