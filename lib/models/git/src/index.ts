@@ -7,6 +7,7 @@ import inquirer from 'inquirer';
 import terminalLink from 'terminal-link';
 import semver from 'semver';
 import { readFile, writeFile, spinnerStart, log } from '@js-cli/utils';
+import CloudBuild from '@js-cli/cloudbuild';
 import Github from './Github';
 
 const DEFAULT_CLI_HOME = '.js-cli';
@@ -58,7 +59,8 @@ class Git {
   public branch!: string // 本地开发分支
   public remote!: string // 远程分支
   public token!: string // github token
-  constructor({ name, version, dir }: {name: string, version: string, dir: string}, {
+  public buildCmd: string // 构建命令
+  constructor({ name, version, dir, buildCmd }: {name: string, version: string, dir: string, buildCmd: string}, {
     refreshServer = false,
     refreshToken = false,
     refreshOwner = false,
@@ -70,6 +72,26 @@ class Git {
     this.refreshServer = refreshServer;
     this.refreshToken = refreshToken;
     this.refreshOwner = refreshOwner;
+    this.buildCmd = buildCmd
+  }
+  async publish() {
+    await this.preparePublish();
+    const cloudBuild = new CloudBuild(this, {
+      buildCmd: this.buildCmd,
+    });
+    await cloudBuild.init();
+    await cloudBuild.build();
+  }
+
+  preparePublish() {
+    if (this.buildCmd) {
+      const buildCmdArray = this.buildCmd.split(' ');
+      if (buildCmdArray[0] !== 'npm' && buildCmdArray[0] !== 'cnpm') {
+        throw new Error('Build命令非法，必须使用npm或cnpm！');
+      }
+    } else {
+      this.buildCmd = 'npm run build';
+    }
   }
 
   async prepare() {

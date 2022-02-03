@@ -442,6 +442,12 @@
       "projectFolder": "lib/models/command",
       "reviewCategory": "tools",
       "shouldPublish": true
+    },
+    {
+      "packageName": "@js-cli/cloudbuild",
+      "projectFolder": "lib/models/cloudbuild",
+      "reviewCategory": "tools",
+      "shouldPublish": true
     }
   ]
 }
