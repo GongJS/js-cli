@@ -1,0 +1,27 @@
+{
+  "name": "@js-cli/cloudbuild",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "scripts": {
+    "dev": "npx rollup -c -w",
+    "build": "npx rollup -c"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@js-cli/utils": "~1.0.2",
+    "lodash": "^4.17.21",
+    "simple-git": "^3.1.1",
+    "socket.io-client": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.178",
+    "@types/socket.io-client": "1.4.36"
+  }
+}
