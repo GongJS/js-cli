@@ -6,9 +6,15 @@ import userHome from 'user-home';
 import inquirer from 'inquirer';
 import terminalLink from 'terminal-link';
 import semver from 'semver';
-import { readFile, writeFile, spinnerStart, log } from '@js-cli/utils';
+import { readFile, writeFile, spinnerStart, log, request } from '@js-cli/utils';
 import CloudBuild from '@js-cli/cloudbuild';
 import Github from './Github';
+
+interface OssTemplateFileType {
+  data: any
+  code: number,
+  url: string
+}
 
 const DEFAULT_CLI_HOME = '.js-cli';
 const GIT_ROOT_DIR = '.git';
@@ -17,11 +23,13 @@ const GIT_TOKEN_FILE = '.git_token';
 const GIT_OWN_FILE = '.git_own';
 const GIT_LOGIN_FILE = '.git_login';
 const GIT_IGNORE_FILE = '.gitignore';
+const GIT_PUBLISH_FILE = '.git_publish';
 const GITHUB = 'github';
 const REPO_OWNER_USER = 'user';
 const REPO_OWNER_ORG = 'org';
 const VERSION_RELEASE = 'release';
 const VERSION_DEVELOP = 'dev';
+const TEMPLATE_TEMP_DIR = 'oss';
 
 const GIT_SERVER_TYPE = [{
   name: 'Github',
@@ -39,6 +47,11 @@ const GIT_OWNER_TYPE = [{
 const GIT_OWNER_TYPE_ONLY = [{
   name: '个人',
   value: REPO_OWNER_USER,
+}];
+
+const GIT_PUBLISH_TYPE = [{
+  name: 'OSS',
+  value: 'oss',
 }];
 
 class Git {
@@ -60,10 +73,20 @@ class Git {
   public remote!: string // 远程分支
   public token!: string // github token
   public buildCmd: string // 构建命令
-  constructor({ name, version, dir, buildCmd }: {name: string, version: string, dir: string, buildCmd: string}, {
+  public gitPublish!: string // 静态资源服务器类型
+  public prod: boolean // 是否正式发布
+  public sshUser: string
+  public sshIp: string
+  public sshPath: string
+  constructor({ name, version, dir }: {name: string, version: string, dir: string }, {
     refreshServer = false,
     refreshToken = false,
     refreshOwner = false,
+    buildCmd = '',
+    prod = false,
+    sshUser = '',
+    sshIp = '',
+    sshPath = ''
   }) {
     this.name = name;
     this.version = version;
@@ -73,17 +96,45 @@ class Git {
     this.refreshToken = refreshToken;
     this.refreshOwner = refreshOwner;
     this.buildCmd = buildCmd
+    this.prod = prod; // 是否正式发布
+    this.sshUser = sshUser;
+    this.sshIp = sshIp;
+    this.sshPath = sshPath;
   }
   async publish() {
     await this.preparePublish();
     const cloudBuild = new CloudBuild(this, {
       buildCmd: this.buildCmd,
+      type: this.gitPublish,
+      prod: this.prod,
     });
+    await cloudBuild.prepare();
     await cloudBuild.init();
-    await cloudBuild.build();
+    const ret = await cloudBuild.build();
+    if (ret) {
+      await this.uploadTemplate();
+    }
+    if (this.prod && ret) {
+      await this.checkTag(); // 打tag
+      await this.checkoutBranch('master'); // 切换分支到master
+      await this.mergeBranchToMaster(); // 将开发分支代码合并到master
+      await this.pushRemoteRepo('master'); // 将代码推送到远程master
+      await this.deleteLocalBranch(); // 删除本地开发分支
+      await this.deleteRemoteBranch(); // 删除远程开发分支
+    }
   }
 
-  preparePublish() {
+  getPackageJson() {
+    const pkgPath = path.resolve(this.dir, 'package.json');
+    if (!fs.existsSync(pkgPath)) {
+      throw new Error(`package.json 不存在！源码目录：${this.dir}`);
+    }
+    return fse.readJsonSync(pkgPath);
+  }
+
+  async preparePublish() {
+    log.info('', '开始进行云构建前代码检查');
+    const pkg = this.getPackageJson();
     if (this.buildCmd) {
       const buildCmdArray = this.buildCmd.split(' ');
       if (buildCmdArray[0] !== 'npm' && buildCmdArray[0] !== 'cnpm') {
@@ -92,6 +143,27 @@ class Git {
     } else {
       this.buildCmd = 'npm run build';
     }
+    const buildCmdArray = this.buildCmd.split(' ');
+    const lastCmd = buildCmdArray[buildCmdArray.length - 1];
+    if (!pkg.scripts || !Object.keys(pkg.scripts).includes(lastCmd)) {
+      throw new Error(this.buildCmd + '命令不存在！');
+    }
+    log.success('代码预检查通过');
+    const gitPublishPath = this.createPath(GIT_PUBLISH_FILE);
+    let gitPublish = readFile(gitPublishPath);
+    if (!gitPublish) {
+      gitPublish = (await inquirer.prompt({
+        type: 'list',
+        choices: GIT_PUBLISH_TYPE,
+        message: '请选择您想要上传代码的平台',
+        name: 'gitPublish',
+      })).gitPublish;
+      writeFile(gitPublishPath, gitPublish);
+      log.success('git publish类型写入成功', `${gitPublish} -> ${gitPublishPath}`);
+    } else {
+      log.success('git publish类型获取成功', gitPublish);
+    }
+    this.gitPublish = gitPublish as string;
   }
 
   async prepare() {
@@ -120,11 +192,13 @@ class Git {
     await this.checkStash();
     // 3.检查代码冲突
     await this.checkConflicted();
-    // 4.切换开发分支
+    // 4.检查未提交代码
+    await this.checkNotCommitted();
+    // 5.切换开发分支
     await this.checkoutBranch(this.branch);
-    // 5.合并远程master分支和开发分支代码
+    // 6.合并远程master分支和开发分支代码
     await this.pullRemoteMasterAndBranch();
-    // 6.将开发分支推送到远程仓库
+    // 7.将开发分支推送到远程仓库
     await this.pushRemoteRepo(this.branch);
   }
 
@@ -388,12 +462,12 @@ class Git {
     if (!this.user) {
       throw new Error('用户信息获取失败！');
     }
-    log.verbose('user', this.user);
+    // log.verbose('user', this.user);
     this.orgs = await this.gitServer.getOrg(this.user.login);
     if (!this.orgs) {
       throw new Error('组织信息获取失败！');
     }
-    log.verbose('orgs', JSON.stringify(this.orgs));
+    // log.verbose('orgs', JSON.stringify(this.orgs));
     log.success('Github' + ' 用户和组织信息获取成功');
   }
 
@@ -458,7 +532,7 @@ class Git {
     } else {
       log.success('远程仓库信息获取成功');
     }
-    log.verbose('repo', repo);
+    // log.verbose('repo', repo);
     this.repo = repo;
   }
 
@@ -505,6 +579,87 @@ pnpm-debug.log*
     fse.ensureDirSync(rootDir);
     return filePath;
   }
+
+  async deleteLocalBranch() {
+    log.info('开始删除本地开发分支', this.branch);
+    await this.git.deleteLocalBranch(this.branch);
+    log.success('删除本地分支成功', this.branch);
+  }
+
+  async deleteRemoteBranch() {
+    log.info('开始删除远程分支', this.branch);
+    await this.git.push(['origin', '--delete', this.branch]);
+    log.success('删除远程分支成功', this.branch);
+  }
+
+  async mergeBranchToMaster() {
+    log.info('开始合并代码', `[${this.branch}] -> [master]`);
+    await this.git.mergeFromTo(this.branch, 'master');
+    log.success('代码合并成功', `[${this.branch}] -> [master]`);
+  }
+
+  async checkTag() {
+    log.info('','获取远程 tag 列表');
+    const tag = `${VERSION_RELEASE}/${this.version}`;
+    const tagList = await this.getRemoteBranchList(VERSION_RELEASE);
+    if (tagList.includes(this.version)) {
+      log.success('远程 tag 已存在', tag);
+      await this.git.push(['origin', `:refs/tags/${tag}`]);
+      log.success('远程 tag 已删除', tag);
+    }
+    const localTagList = await this.git.tags();
+    if (localTagList.all.includes(tag)) {
+      log.success('本地 tag 已存在', tag);
+      await this.git.tag(['-d', tag]);
+      log.success('本地 tag 已删除', tag);
+    }
+    await this.git.addTag(tag);
+    log.success('本地 tag 创建成功', tag);
+    await this.git.pushTags('origin');
+    log.success('远程 tag 推送成功', tag);
+  }
+
+  async uploadTemplate() {
+    const TEMPLATE_FILE_NAME = 'index.html';
+    if (this.sshUser && this.sshIp && this.sshPath) {
+      log.info('','开始下载模板文件');
+      let ossTemplateFile = (await request({
+        url: '/oss/get',
+        params: {
+          name: this.name,
+          type: this.prod ? 'prod' : 'dev',
+          file: TEMPLATE_FILE_NAME,
+        },
+      })) as unknown as OssTemplateFileType;
+      if (ossTemplateFile.code === 0 && ossTemplateFile.data) {
+        ossTemplateFile = ossTemplateFile.data;
+      }
+      log.verbose('模板文件url:', ossTemplateFile.url);
+      const response = await request({
+        url: ossTemplateFile.url,
+      });
+      if (response) {
+        const ossTempDir = path.resolve(this.homePath, TEMPLATE_TEMP_DIR, `${this.name}@${this.version}`);
+        if (!fs.existsSync(ossTempDir)) {
+          fse.mkdirpSync(ossTempDir);
+        } else {
+          fse.emptyDirSync(ossTempDir);
+        }
+        const templateFilePath = path.resolve(ossTempDir, TEMPLATE_FILE_NAME);
+        fse.createFileSync(templateFilePath);
+        fs.writeFileSync(templateFilePath, response as unknown as string);
+        log.success('模板文件下载成功', templateFilePath);
+        log.info('','开始上传模板文件至服务器');
+        const uploadCmd = `scp -r ${templateFilePath} ${this.sshUser}@${this.sshIp}:${this.sshPath}`;
+        log.verbose('uploadCmd', uploadCmd);
+        const ret = require('child_process').execSync(uploadCmd);
+        console.log(ret.toString());
+        log.success('模板文件上传成功');
+        fse.emptyDirSync(ossTempDir);
+      }
+    }
+  }
+
 }
 
 export default Git

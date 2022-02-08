@@ -5,7 +5,7 @@ import log from './log';
 import * as http from './getNpmInfo'
 import request from './request';
 
-var KEBAB_REGEX = /[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g;
+const KEBAB_REGEX = /[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g;
 
 const isObject = (o: any) => {
     return Object.prototype.toString.call(o) === '[object Object]'
@@ -61,11 +61,11 @@ const kebabCase = (str: string) => {
 	});
 };
 
-const readFile = (path: string, options = {}) => {
+const readFile = (path: string, options?: any) => {
     if (fs.existsSync(path)) {
         const buffer = fs.readFileSync(path);
         if (buffer) {
-            if (options.toJson) {
+            if (options?.toJson) {
                 return buffer.toJSON();
             } else {
                 return buffer.toString();
@@ -75,7 +75,7 @@ const readFile = (path: string, options = {}) => {
     return null;
 }
 
-const writeFile = (path: string, data: any, { rewrite = true } = {}) => {
+const writeFile = (path: string, data: any, rewrite = true) => {
     if (fs.existsSync(path)) {
         if (rewrite) {
             fs.writeFileSync(path, data);

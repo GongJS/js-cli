@@ -434,5 +434,5 @@ const init = (...args: any[]) => {
     return new InitCommand(args)
 }
 
-export { init }
+init.init = init
 export default init

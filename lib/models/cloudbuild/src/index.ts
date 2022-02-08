@@ -1,12 +1,13 @@
 import io, { Socket } from 'socket.io-client';
-import { log } from '@js-cli/utils';
+import { log, request } from '@js-cli/utils';
 import { get } from 'lodash';
+import inquirer from 'inquirer'
 
 const WS_SERVER = 'http://1.116.156.44:8085';
 const TIME_OUT = 5 * 60 * 1000;
 const CONNECT_TIME_OUT = 5 * 1000;
 
-const FAILED_CODE = ['prepare failed', 'download failed', 'install failed', 'build failed'];
+const FAILED_CODE = ['prepare failed', 'download failed', 'install failed', 'build failed', 'pre-publish failed', 'publish failed'];
 type MsgType = {
   data: {
     action: string,
@@ -30,10 +31,12 @@ class CloudBuild {
   public timeout: number
   public timer!: NodeJS.Timeout
   public socket!:  typeof Socket
+  public prod: string
   constructor(git: any, options: any) {
     this.git = git;
     this.buildCmd = options.buildCmd;
     this.timeout = TIME_OUT;
+    this.prod = options.prod;
   }
 
   doTimeout(fn: Function, timeout: number) {
@@ -51,6 +54,7 @@ class CloudBuild {
           branch: this.git.branch,
           version: this.git.version,
           buildCmd: this.buildCmd,
+          prod: this.prod,
         },
       });
       socket.on('connect', () => {
@@ -76,7 +80,7 @@ class CloudBuild {
         log.success('disconnect', '云构建任务断开');
         disconnect();
       });
-      socket.on('error', (err) => {
+      socket.on('error', (err: Error) => {
         log.error('error', '云构建出错！', err);
         disconnect();
         reject(err);
@@ -84,23 +88,67 @@ class CloudBuild {
       this.socket = socket;
     });
   }
+  async prepare() {
+    // 判断是否处于正式发布
+    if (this.prod) {
+      // 1.获取OSS文件
+      const projectName = this.git.name;
+      const projectType = this.prod ? 'prod' : 'dev';
+      const ossProject = (await request({
+        url: '/project/oss',
+        params: {
+          name: projectName,
+          type: projectType,
+        },
+      })) as any;
+      // 2.判断当前项目的OSS文件是否存在
+      if (ossProject.code === 0 && ossProject.data.length > 0) {
+        // 3.询问用户是否进行覆盖安装
+        const cover = (await inquirer.prompt({
+          type: 'list',
+          name: 'cover',
+          choices: [{
+            name: '覆盖发布',
+            value: true,
+          }, {
+            name: '放弃发布',
+            value: false,
+          }],
+          default: true,
+          message: `OSS已存在 [${projectName}] 项目，是否强行覆盖发布？`,
+        })).cover;
+        if (!cover) {
+          throw new Error('发布终止');
+        }
+      }
+    }
+  }
 
   build() {
     return new Promise((resolve, reject) => {
+      let ret = true;
       this.socket.emit('build');
       this.socket.on('build', (msg: MsgType) => {
         const parsedMsg = parseMsg(msg);
         if (FAILED_CODE.indexOf(parsedMsg.action) >= 0) {
+          ret = false;
           log.error(parsedMsg.action, parsedMsg.message);
           clearTimeout(this.timer);
           this.socket.disconnect();
           this.socket.close();
+          resolve(ret);
         } else {
           log.success(parsedMsg.action, parsedMsg.message);
         }
       });
       this.socket.on('building', (msg: MsgType) => {
         console.log(msg);
+      });
+      this.socket.on('disconnect', () => {
+        resolve(ret);
+      });
+      this.socket.on('error', (err: Error) => {
+        reject(err);
       });
     });
   }

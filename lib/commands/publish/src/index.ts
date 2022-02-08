@@ -13,6 +13,10 @@ class PublishCommand extends Command {
     refreshToken: boolean
     refreshOwner: boolean
     buildCmd: string
+    prod: boolean
+    sshUser: string
+    sshIp: string
+    sshPath: string
   }
   public _argv: any
   public _cmd: any
@@ -21,13 +25,15 @@ class PublishCommand extends Command {
   }
 
   init() {
-    // 处理参数
-    log.verbose('publish', this._argv, this._cmd);
     this.options = {
-      refreshServer: this._cmd.refreshServer,
-      refreshToken: this._cmd.refreshToken,
-      refreshOwner: this._cmd.refreshOwner,
-      buildCmd: this._cmd.buildCmd,
+      refreshServer: this._cmd[0].refreshServer,
+      refreshToken: this._cmd[0].refreshToken,
+      refreshOwner: this._cmd[0].refreshOwner,
+      buildCmd: this._cmd[0].buildCmd,
+      prod: this._cmd[0].prod ? true : false,
+      sshUser: this._cmd[0].sshUser,
+      sshIp: this._cmd[0].sshIp,
+      sshPath: this._cmd[0].sshPath,
     };
   }
 
@@ -73,5 +79,6 @@ class PublishCommand extends Command {
 const publish = (...args: any[]) => {
     return new PublishCommand(args)
   }
-export { publish }
+
+publish.publish = publish
 export default publish

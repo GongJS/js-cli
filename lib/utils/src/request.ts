@@ -7,7 +7,7 @@ const request = axios.create({
     timeout: 30000,
 })
 
-request.interceptors.response.use( (response: AxiosResponse<any>) => {
+request.interceptors.response.use( (response: AxiosResponse) => {
     if (response.status === 200) {
         return response.data
     }},

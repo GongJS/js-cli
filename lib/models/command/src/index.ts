@@ -4,7 +4,7 @@ const LOWEST_NODE_VERSION = '12.0.0'
 abstract class Command {
   public _argv: any[]
   public _cmd: any
-  constructor(argv: any[]) {
+  protected constructor(argv: any[]) {
     this._cmd = ''
     if (!argv) {
       throw new Error('参数不能为空')

@@ -1,8 +1,9 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@js-cli/commands': ^1.0.1
   '@js-cli/models': ~1.0.1
+  '@rollup/plugin-commonjs': ^21.0.1
+  '@rollup/plugin-typescript': ^8.3.0
   '@rush-temp/add': file:./projects/add.tgz
   '@rush-temp/cloudbuild': file:./projects/cloudbuild.tgz
   '@rush-temp/command': file:./projects/command.tgz
@@ -20,8 +21,9 @@ specifiers:
   '@types/ejs': ^3.1.0
   '@types/fs-extra': ^9.0.13
   '@types/glob': ^7.2.0
+  '@types/inquirer': ^8.1.0
   '@types/lodash': ^4.14.178
-  '@types/node': ^17.0.13
+  '@types/node': ^16.11.7
   '@types/npmlog': ^4.1.3
   '@types/path-exists': ^4.0.2
   '@types/root-check': ^1.0.0
@@ -35,29 +37,33 @@ specifiers:
   commander: ^8.3.0
   dotenv: ^10.0.0
   ejs: ^3.1.6
-  fs-extra: ^10.0.0
+  fs-extra: ^9.0.1
   glob: ^7.2.0
   import-local: ^3.0.3
   inquire: ^0.4.8
-  inquirer: ^8.2.0
+  inquirer: ^8.1.0
   kebab-case: ^1.0.1
   lodash: ^4.17.21
   npmlog: ^5.0.1
   path-exists: 4.0.0
   pkg-dir: ^5.0.0
-  rollup-plugin-json: ^4.0.0
+  rollup: ^2.60.0
+  rollup-plugin-clear: ^2.0.7
   root-check: 1.0.0
   semver: ^7.3.5
   semver-sort: ^0.0.4
   simple-git: ^3.1.1
   socket.io-client: ^2.0.0
   terminal-link: ^2.1.1
+  tslib: ^2.3.1
+  typescript: ^4.5.2
   url-join: ^4.0.1
   user-home: ^3.0.0
 
 dependencies:
-  '@js-cli/commands': 1.0.1
   '@js-cli/models': 1.0.1
+  '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+  '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
   '@rush-temp/add': file:projects/add.tgz
   '@rush-temp/cloudbuild': file:projects/cloudbuild.tgz
   '@rush-temp/command': file:projects/command.tgz
@@ -75,8 +81,9 @@ dependencies:
   '@types/ejs': 3.1.0
   '@types/fs-extra': 9.0.13
   '@types/glob': 7.2.0
+  '@types/inquirer': 8.2.0
   '@types/lodash': 4.14.178
-  '@types/node': 17.0.13
+  '@types/node': 16.11.9
   '@types/npmlog': 4.1.3
   '@types/path-exists': 4.0.2
   '@types/root-check': 1.0.0
@@ -90,7 +97,7 @@ dependencies:
   commander: 8.3.0
   dotenv: 10.0.0
   ejs: 3.1.6
-  fs-extra: 10.0.0
+  fs-extra: 9.1.0
   glob: 7.2.0
   import-local: 3.0.3
   inquire: 0.4.8
@@ -100,13 +107,16 @@ dependencies:
   npmlog: 5.0.1
   path-exists: 4.0.0
   pkg-dir: 5.0.0
-  rollup-plugin-json: 4.0.0
+  rollup: 2.67.1
+  rollup-plugin-clear: 2.0.7
   root-check: 1.0.0
   semver: 7.3.5
   semver-sort: 0.0.4
   simple-git: 3.1.1
   socket.io-client: 2.4.0
   terminal-link: 2.1.1
+  tslib: 2.3.1
+  typescript: 4.5.5
   url-join: 4.0.1
   user-home: 3.0.0
 
@@ -116,10 +126,10 @@ packages:
     resolution: {integrity: sha512-xI9tsyOSSjAQRTBZXUqXKd3JfR1tZ0XPzGMZGVsvofEyEyIpa6tqYEfRjeAJWA24/ZZ9JeFQFxa+CQh/TczYxQ==}
     dependencies:
       '@js-cli/models': 1.0.0
-      '@js-cli/utils': 1.0.1
+      '@js-cli/utils': 1.0.2
       '@types/ejs': 3.1.0
       '@types/glob': 7.2.0
-      '@types/inquirer': 8.1.3
+      '@types/inquirer': 8.2.0
       ejs: 3.1.6
       glob: 7.2.0
       inquirer: 8.2.0
@@ -134,7 +144,7 @@ packages:
   /@js-cli/models/1.0.0:
     resolution: {integrity: sha512-7i64T4kgyUEIhXtH8tcEkncb49g9czjJqsb8GGRV4wy2jGEPYuKrrrpNvOs1nZnYv9QKE3SLUm2aZjLQsybboA==}
     dependencies:
-      '@js-cli/utils': 1.0.1
+      '@js-cli/utils': 1.0.2
       npminstall: 4.11.0
       pkg-dir: 5.0.0
     transitivePeerDependencies:
@@ -154,22 +164,6 @@ packages:
     transitivePeerDependencies:
       - debug
       - supports-color
-    dev: false
-
-  /@js-cli/utils/1.0.1:
-    resolution: {integrity: sha512-WJ6u1vBpxbNjYszbscX6vQlnxdhhHLgG9zqX7rKFINwphIRSlDbwxMvlM6vUD7FWC6hc8mgUlhrll9TCHEDXYg==}
-    dependencies:
-      '@types/cli-spinner': 0.2.1
-      '@types/npmlog': 4.1.3
-      '@types/semver-sort': 0.0.1
-      '@types/url-join': 4.0.1
-      axios: 0.24.0
-      cli-spinner: 0.2.10
-      npmlog: 5.0.1
-      semver-sort: 0.0.4
-      url-join: 4.0.1
-    transitivePeerDependencies:
-      - debug
     dev: false
 
   /@js-cli/utils/1.0.2:
@@ -197,12 +191,43 @@ packages:
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
     dev: false
 
+  /@rollup/plugin-commonjs/21.0.1_rollup@2.67.1:
+    resolution: {integrity: sha512-EA+g22lbNJ8p5kuZJUYyhhDK7WgJckW5g4pNN7n4mAFUM96VuwUnNT3xr2Db2iCZPI1pJPbGyfT5mS9T1dHfMg==}
+    engines: {node: '>= 8.0.0'}
+    peerDependencies:
+      rollup: ^2.38.3
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.67.1
+      commondir: 1.0.1
+      estree-walker: 2.0.2
+      glob: 7.2.0
+      is-reference: 1.2.1
+      magic-string: 0.25.7
+      resolve: 1.20.0
+      rollup: 2.67.1
+    dev: false
+
   /@rollup/plugin-json/4.1.0:
     resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
     peerDependencies:
       rollup: ^1.20.0 || ^2.0.0
     dependencies:
       '@rollup/pluginutils': 3.1.0
+    dev: false
+
+  /@rollup/plugin-typescript/8.3.0_86c7512d54e5fcf3b546877c26442da8:
+    resolution: {integrity: sha512-I5FpSvLbtAdwJ+naznv+B4sjXZUcIvLLceYpITAn7wAP8W0wqc5noLdGIp9HGVntNhRWXctwPYrSSFQxtl0FPA==}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      rollup: ^2.14.0
+      tslib: '*'
+      typescript: '>=3.7.0'
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.67.1
+      resolve: 1.20.0
+      rollup: 2.67.1
+      tslib: 2.3.1
+      typescript: 4.5.5
     dev: false
 
   /@rollup/pluginutils/3.1.0:
@@ -214,6 +239,18 @@ packages:
       '@types/estree': 0.0.39
       estree-walker: 1.0.1
       picomatch: 2.3.1
+    dev: false
+
+  /@rollup/pluginutils/3.1.0_rollup@2.67.1:
+    resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==}
+    engines: {node: '>= 8.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    dependencies:
+      '@types/estree': 0.0.39
+      estree-walker: 1.0.1
+      picomatch: 2.3.1
+      rollup: 2.67.1
     dev: false
 
   /@tootallnate/once/1.1.2:
@@ -267,13 +304,6 @@ packages:
     dependencies:
       '@types/minimatch': 3.0.5
       '@types/node': 16.11.9
-    dev: false
-
-  /@types/inquirer/8.1.3:
-    resolution: {integrity: sha512-AayK4ZL5ssPzR1OtnOLGAwpT0Dda3Xi/h1G0l1oJDNrowp7T1423q4Zb8/emr7tzRlCy4ssEri0LWVexAqHyKQ==}
-    dependencies:
-      '@types/through': 0.0.30
-      rxjs: 7.4.0
     dev: false
 
   /@types/inquirer/8.2.0:
@@ -485,6 +515,11 @@ packages:
     resolution: {integrity: sha1-x57Zf380y48robyXkLzDZkdLS3k=}
     dev: false
 
+  /at-least-node/1.0.0:
+    resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
+    engines: {node: '>= 4.0.0'}
+    dev: false
+
   /await-event/2.1.0:
     resolution: {integrity: sha1-eOn5JoS65AIvn6C18xShFVD5qnY=}
     dev: false
@@ -500,7 +535,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.5
+      follow-redirects: 1.14.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -705,6 +740,10 @@ packages:
   /commander/8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
+    dev: false
+
+  /commondir/1.0.1:
+    resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=}
     dev: false
 
   /component-bind/1.0.0:
@@ -961,6 +1000,10 @@ packages:
     resolution: {integrity: sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==}
     dev: false
 
+  /estree-walker/2.0.2:
+    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
+    dev: false
+
   /esutils/2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
@@ -1037,16 +1080,6 @@ packages:
       path-exists: 4.0.0
     dev: false
 
-  /follow-redirects/1.14.5:
-    resolution: {integrity: sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: false
-
   /follow-redirects/1.14.7:
     resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
     engines: {node: '>=4.0'}
@@ -1105,6 +1138,16 @@ packages:
       universalify: 0.1.2
     dev: false
 
+  /fs-extra/9.1.0:
+    resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      at-least-node: 1.0.0
+      graceful-fs: 4.2.8
+      jsonfile: 6.1.0
+      universalify: 2.0.0
+    dev: false
+
   /fs-minipass/1.2.7:
     resolution: {integrity: sha512-GWSSJGFy4e9GUeCcbIkED+bgAoFyj7XF1mV8rma3QW4NIqX9Kyx79N/PF61H5udOV3aY1IaMLs6pGbH71nlCTA==}
     dependencies:
@@ -1114,6 +1157,13 @@ packages:
   /fs.realpath/1.0.0:
     resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
     dev: false
+
+  /fsevents/2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+    dev: false
+    optional: true
 
   /ftp/0.3.10:
     resolution: {integrity: sha1-kZfYYa2BQvPmPVqDv+TFn3MwiF0=}
@@ -1412,6 +1462,12 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  /is-reference/1.2.1:
+    resolution: {integrity: sha512-U82MsXXiFIrjCK4otLT+o2NA2Cd2g5MLoOVXUZjIOhLurrRxpEXzI8O0KZHr3IjLvlAH1kTPYSuqer5T9ZVBKQ==}
+    dependencies:
+      '@types/estree': 0.0.39
+    dev: false
+
   /is-root/1.0.0:
     resolution: {integrity: sha1-B7bCM7w5TNnQK6FclmvWZg1jQtU=}
     engines: {node: '>=0.10.0'}
@@ -1566,6 +1622,12 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+    dev: false
+
+  /magic-string/0.25.7:
+    resolution: {integrity: sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==}
+    dependencies:
+      sourcemap-codec: 1.4.8
     dev: false
 
   /mime-db/1.51.0:
@@ -2172,6 +2234,12 @@ packages:
       glob: 7.2.0
     dev: false
 
+  /rollup-plugin-clear/2.0.7:
+    resolution: {integrity: sha512-Hg8NC3JcJBO1ofgyQC0IACpyKn/yhHPGZ3C7R3ubNGWUXy9JXHQrewk4J4hVcZznw6SOKayLsaNae596Rwt8Vg==}
+    dependencies:
+      rimraf: 2.7.1
+    dev: false
+
   /rollup-plugin-json/4.0.0:
     resolution: {integrity: sha512-hgb8N7Cgfw5SZAkb3jf0QXii6QX/FOkiIq2M7BAQIEydjHvTyxXHQiIzZaTFgx1GK0cRCHOCBHIyEkkLdWKxow==}
     deprecated: This module has been deprecated and is no longer maintained. Please use @rollup/plugin-json.
@@ -2183,6 +2251,14 @@ packages:
     resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
     dependencies:
       estree-walker: 0.6.1
+    dev: false
+
+  /rollup/2.67.1:
+    resolution: {integrity: sha512-1Sbcs4OuW+aD+hhqpIRl+RqooIpF6uQcfzU/QSI7vGkwADY6cM4iLsBGRM2CGLXDTDN5y/yShohFmnKegSPWzg==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: false
 
   /root-check/1.0.0:
@@ -2346,6 +2422,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
     optional: true
+
+  /sourcemap-codec/1.4.8:
+    resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    dev: false
 
   /spdx-correct/3.1.1:
     resolution: {integrity: sha512-cOYcUWwhCuHCXi49RhFRCyJEK3iPj1Ziz9DpViV3tbZOwXD49QzIN3MpOLJNxh2qwq2lJJZaKMVw9qNi4jTC0w==}
@@ -2588,6 +2668,12 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
+  /typescript/4.5.5:
+    resolution: {integrity: sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: false
+
   /unescape/1.0.1:
     resolution: {integrity: sha512-O0+af1Gs50lyH1nUu3ZyYS1cRh01Q/kUKatTOkSs7jukXE6/NebucDVxyiDsA9AQ4JC1V1jUH9EO8JX2nMDgGQ==}
     engines: {node: '>=0.10.0'}
@@ -2776,34 +2862,51 @@ packages:
     dev: false
 
   file:projects/add.tgz:
-    resolution: {integrity: sha512-W1YasQ2ofRetXNgIbCmy2Mo72hudSE5zwPB9lkvJKvjww2ZQb+nwna0+qrIpLNY0SJIS4S5fG1H8mQZgkwAVgA==, tarball: file:projects/add.tgz}
+    resolution: {integrity: sha512-4rafoSZFzgcbWVvscQ+Yh3zEJDmF3aAlbtUoqMocM6CgDvZS7W1o7/2yEPbDyF6zZW8zUyzlNV8fxFcxrIKNzQ==, tarball: file:projects/add.tgz}
     name: '@rush-temp/add'
     version: 0.0.0
     dependencies:
       '@js-cli/models': 1.0.1
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
       '@types/ejs': 3.1.0
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/node': 17.0.13
+      '@types/node': 16.11.9
       ejs: 3.1.6
-      fs-extra: 10.0.0
+      fs-extra: 9.1.0
       glob: 7.2.0
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
       rollup-plugin-json: 4.0.0
+      semver: 7.3.5
+      tslib: 2.3.1
+      typescript: 4.5.5
     transitivePeerDependencies:
       - debug
       - supports-color
     dev: false
 
   file:projects/cloudbuild.tgz:
-    resolution: {integrity: sha512-JfIGTKoz/O4+CDmJZTrfyFr13/OxRpMX5jrWdsgPq7v4F5uxV9osw78r681QwaZrduqUkrATRWIg27YTBsTaFw==, tarball: file:projects/cloudbuild.tgz}
+    resolution: {integrity: sha512-4wE5KmzeJFAZ98/hDHYLU/XdYo6NE3qaf2OHsWt2Ay23ESdGTYXP0Y2VDAWk+14gUfLRaSFPAA8pbfez+ly1mg==, tarball: file:projects/cloudbuild.tgz}
     name: '@rush-temp/cloudbuild'
     version: 0.0.0
     dependencies:
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
+      '@types/fs-extra': 9.0.13
+      '@types/inquirer': 8.2.0
       '@types/lodash': 4.14.178
+      '@types/node': 16.11.9
       '@types/socket.io-client': 1.4.36
+      inquirer: 8.2.0
       lodash: 4.17.21
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
       simple-git: 3.1.1
       socket.io-client: 2.4.0
+      tslib: 2.3.1
+      typescript: 4.5.5
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -2811,23 +2914,34 @@ packages:
     dev: false
 
   file:projects/command.tgz:
-    resolution: {integrity: sha512-GhEskpEqM7OreH9dwU6KGkLkU4PsxSfN91ubaUgXtQX958t3agIetHafpJnjPHJyvMP9qgONyFrJwNhPxdOG+Q==, tarball: file:projects/command.tgz}
+    resolution: {integrity: sha512-f5mzK+I6ZiJC1rP0RtOPQotWYlklkJ/iCGCyMTqsPQRfHImR202Pir1DxaPPvTIzq8tFqJswagoIL59ksEJwQA==, tarball: file:projects/command.tgz}
     name: '@rush-temp/command'
     version: 0.0.0
     dependencies:
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
+      '@types/node': 16.11.9
+      '@types/semver': 7.3.9
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
       semver: 7.3.5
+      tslib: 2.3.1
+      typescript: 4.5.5
     dev: false
 
   file:projects/core.tgz:
-    resolution: {integrity: sha512-IoF47MTlgng9/7ggsJa6Q+qZq/Pb+L5ev+ChV+n1K61tZ0BKcpcuW727COlT/Djv+BRGkbs2xf3VXtK0JpOXSQ==, tarball: file:projects/core.tgz}
+    resolution: {integrity: sha512-TsnmsfCXaR/ho5/cyUoYDRRCHsD4iIrZUqW8RKSrl9fqcdnRQmBKrcOkznDzsy6rFjwbWtUThQabgAzV1BZcjw==, tarball: file:projects/core.tgz}
     name: '@rush-temp/core'
     version: 0.0.0
     dependencies:
       '@js-cli/commands': 1.0.1
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
       '@rollup/plugin-json': 4.1.0
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
       '@types/colors': 1.2.1
       '@types/commander': 2.12.2
       '@types/dotenv': 8.2.0
+      '@types/node': 16.11.9
       '@types/path-exists': 4.0.2
       '@types/root-check': 1.0.0
       '@types/semver': 7.3.9
@@ -2836,36 +2950,57 @@ packages:
       dotenv: 10.0.0
       import-local: 3.0.3
       path-exists: 4.0.0
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
       root-check: 1.0.0
       semver: 7.3.5
+      tslib: 2.3.1
+      typescript: 4.5.5
     transitivePeerDependencies:
       - debug
       - supports-color
     dev: false
 
   file:projects/exec.tgz:
-    resolution: {integrity: sha512-LMW60y/59ZGBSYivwcv9TBrfx1qKbiIQQ3FzPf0oM0gG3TylscJVaa6NvcxWErXcAS6HbiFvzR+L3Y9Epj3gqA==, tarball: file:projects/exec.tgz}
+    resolution: {integrity: sha512-ybPdPSd98pusRHlOQ7oZ0Leu9+CJrl82EpQAZrHDb2/CNVRJgKocCF4DPuBvUDMBUZbNS9yC7SSTSjWWglhzlQ==, tarball: file:projects/exec.tgz}
     name: '@rush-temp/exec'
     version: 0.0.0
     dependencies:
       '@js-cli/models': 1.0.1
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
       '@rollup/plugin-json': 4.1.0
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
+      '@types/node': 16.11.9
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
+      semver: 7.3.5
+      tslib: 2.3.1
+      typescript: 4.5.5
     dev: false
 
   file:projects/git.tgz:
-    resolution: {integrity: sha512-Z+3f7wEjBmH3XWtkqTclG86QkhhYHmyXoZ0c5s0omxNN2lwPAVGodJq40wEPqKgiIBAshM/NHdWEDsMwDloomQ==, tarball: file:projects/git.tgz}
+    resolution: {integrity: sha512-xPcdaKPa1ZcvXmy4urtbb0zj610EHG265sPCRjIZXFA6IYfCdPiPQyqvV73PZsR7HflkBHnyg78foTLQdEBE4A==, tarball: file:projects/git.tgz}
     name: '@rush-temp/git'
     version: 0.0.0
     dependencies:
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
+      '@types/fs-extra': 9.0.13
       '@types/inquirer': 8.2.0
+      '@types/node': 16.11.9
+      '@types/semver': 7.3.9
       '@types/user-home': 2.0.0
       axios: 0.25.0
-      fs-extra: 10.0.0
+      fs-extra: 9.1.0
       inquire: 0.4.8
       inquirer: 8.2.0
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
       semver: 7.3.5
       simple-git: 3.1.1
       terminal-link: 2.1.1
+      tslib: 2.3.1
+      typescript: 4.5.5
       user-home: 3.0.0
     transitivePeerDependencies:
       - debug
@@ -2873,60 +3008,85 @@ packages:
     dev: false
 
   file:projects/init.tgz:
-    resolution: {integrity: sha512-3H5/Fpv76sjn6Vyp63lWZOYOolc7TsDekDSUYpiO3/a2XxvvTnbgVhdNhUhUag/ORdnQxyDu7Nr2Rd4TruEYAw==, tarball: file:projects/init.tgz}
+    resolution: {integrity: sha512-zvX7ZZWd6zdan8RhiWp0WYvRNSHqI2B1ryUQ2qk3bKldBBsOpMKJPhB4Uz1sUiXDQQImfMHxfGNZYNmNgYGt3Q==, tarball: file:projects/init.tgz}
     name: '@rush-temp/init'
     version: 0.0.0
     dependencies:
       '@js-cli/models': 1.0.1
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
       '@types/ejs': 3.1.0
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
       '@types/inquirer': 8.2.0
+      '@types/node': 16.11.9
       '@types/semver': 7.3.9
       ejs: 3.1.6
-      fs-extra: 10.0.0
+      fs-extra: 9.1.0
       glob: 7.2.0
       inquirer: 8.2.0
       kebab-case: 1.0.1
       npminstall: 4.11.0
       pkg-dir: 5.0.0
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
       rollup-plugin-json: 4.0.0
       semver: 7.3.5
+      tslib: 2.3.1
+      typescript: 4.5.5
     transitivePeerDependencies:
       - supports-color
     dev: false
 
   file:projects/package.tgz:
-    resolution: {integrity: sha512-xW/kxp7g9O8dEiVuEHjRrvPoJlS0Gj1jb/1cXJua71Qs8gC8Z/C0dx8B99QiehFLc4h3m8vTqwGLb2g/GYt5wg==, tarball: file:projects/package.tgz}
+    resolution: {integrity: sha512-uijbOGdqH8G7+vEvFOdBeqNxORCK/RTHlKVyzuSerx1o8xlCEa6PfgRQGHtAG3f1H0pO7kQLu5Jgbjx4PqZCcA==, tarball: file:projects/package.tgz}
     name: '@rush-temp/package'
     version: 0.0.0
     dependencies:
-      fs-extra: 10.0.0
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
+      '@types/fs-extra': 9.0.13
+      '@types/node': 16.11.9
+      fs-extra: 9.1.0
       npminstall: 4.11.0
       path-exists: 4.0.0
       pkg-dir: 5.0.0
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
+      tslib: 2.3.1
+      typescript: 4.5.5
     transitivePeerDependencies:
       - supports-color
     dev: false
 
   file:projects/publish.tgz:
-    resolution: {integrity: sha512-YC47mT2jgtA/MzRdQI0Lv1nhWw3hwjSfPsurT4FkNZwoliCpvQOo1tu3Ipa+hmYGG6IwQ6OWvW7uLBYsng88Aw==, tarball: file:projects/publish.tgz}
+    resolution: {integrity: sha512-eSSsO89XRs2lxUhbJdi7I/4qp4MW65psX3fJL7k8vfg6ELrf9MjAiZJjMQl8K0ZQyIpUqX1qHnQxWXX6QlvXew==, tarball: file:projects/publish.tgz}
     name: '@rush-temp/publish'
     version: 0.0.0
     dependencies:
       '@js-cli/models': 1.0.1
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
       '@rollup/plugin-json': 4.1.0
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
       '@types/fs-extra': 9.0.13
-      '@types/node': 17.0.13
-      fs-extra: 10.0.0
+      '@types/node': 16.11.9
+      fs-extra: 9.1.0
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
+      semver: 7.3.5
+      tslib: 2.3.1
+      typescript: 4.5.5
     dev: false
 
   file:projects/utils.tgz:
-    resolution: {integrity: sha512-F5Ga1C6mguY5ZikW80XZzF2EI9z9sIWZU+6AVf8Pslhgx/Gb/91fcGu34cVIviuH6Sh4i1rFdhjIMNtxcYLRkA==, tarball: file:projects/utils.tgz}
+    resolution: {integrity: sha512-HgcRMusowogQXGrKi9LxqwfnIbtNhXfXXRVHfxEz3QFTnllc7wbF5vYmbGMBQQIcjrB3pIE2V+h8IsM4St3F3g==, tarball: file:projects/utils.tgz}
     name: '@rush-temp/utils'
     version: 0.0.0
     dependencies:
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.1
+      '@rollup/plugin-typescript': 8.3.0_86c7512d54e5fcf3b546877c26442da8
       '@types/cli-spinner': 0.2.1
+      '@types/node': 16.11.9
       '@types/npmlog': 4.1.3
       '@types/semver': 7.3.9
       '@types/semver-sort': 0.0.1
@@ -2934,8 +3094,12 @@ packages:
       axios: 0.24.0
       cli-spinner: 0.2.10
       npmlog: 5.0.1
+      rollup: 2.67.1
+      rollup-plugin-clear: 2.0.7
       semver: 7.3.5
       semver-sort: 0.0.4
+      tslib: 2.3.1
+      typescript: 4.5.5
       url-join: 4.0.1
     transitivePeerDependencies:
       - debug
