@@ -6,6 +6,8 @@ import userHome from 'user-home';
 import inquirer from 'inquirer';
 import terminalLink from 'terminal-link';
 import semver from 'semver';
+import Listr from 'listr'
+import { Observable } from 'rxjs';
 import { readFile, writeFile, spinnerStart, log, request } from '@js-cli/utils';
 import CloudBuild from '@js-cli/cloudbuild';
 import Github from './Github';
@@ -115,15 +117,98 @@ class Git {
       await this.uploadTemplate();
     }
     if (this.prod && ret) {
-      await this.checkTag(); // 打tag
-      await this.checkoutBranch('master'); // 切换分支到master
-      await this.mergeBranchToMaster(); // 将开发分支代码合并到master
-      await this.pushRemoteRepo('master'); // 将代码推送到远程master
-      await this.deleteLocalBranch(); // 删除本地开发分支
-      await this.deleteRemoteBranch(); // 删除远程开发分支
+      this.runCreateTagTask();
     }
   }
+  // 自动生成远程仓库分支
+  runCreateTagTask() {
+    const delay = (fn: Function) => setTimeout(fn, 1000);
+    const tasks = new Listr([
+      {
+        title: '自动生成远程仓库Tag',
+        task: () => new Listr([{
+          title: '创建Tag',
+          task: () => {
+            return new Observable(o => {
+              o.next('正在创建Tag');
+              delay(() => {
+                this.checkTag().then(() => {
+                  o.complete();
+                });
+              });
+            }) as any;
+          },
+        },
+          {
+            title: '切换分支到master',
+            task: () => {
+              return new Observable(o => {
+                o.next('正在切换master分支');
+                delay(() => {
+                  this.checkoutBranch('master').then(() => {
+                    o.complete();
+                  });
+                });
+              });
+            },
+          },
+          {
+            title: '将开发分支代码合并到master',
+            task: () => {
+              return new Observable(o => {
+                o.next('正在合并到master分支');
+                delay(() => {
+                  this.mergeBranchToMaster(this.branch).then(() => {
+                    o.complete();
+                  });
+                });
+              });
+            },
+          },
+          {
+            title: '将代码推送到远程master',
+            task: () => {
+              return new Observable(o => {
+                o.next('正在推送master分支');
+                delay(() => {
+                  this.pushRemoteRepo('master').then(() => {
+                    o.complete();
+                  });
+                });
+              });
+            },
+          },
+          {
+            title: '删除本地开发分支',
+            task: () => {
+              return new Observable(o => {
+                o.next('正在删除本地开发分支');
+                delay(() => {
+                  this.deleteLocalBranch().then(() => {
+                    o.complete();
+                  });
+                });
+              });
+            },
+          },
+          {
+            title: '删除远程开发分支',
+            task: () => {
+              return new Observable(o => {
+                o.next('正在删除远程开发分支');
+                delay(() => {
+                  this.deleteRemoteBranch().then(() => {
+                    o.complete();
+                  });
+                });
+              });
+            },
+          },
+        ]),
+      }]);
 
+    tasks.run();
+  }
   getPackageJson() {
     const pkgPath = path.resolve(this.dir, 'package.json');
     if (!fs.existsSync(pkgPath)) {
@@ -327,7 +412,7 @@ class Git {
   }
 
   async pullRemoteRepo(branchName: string, options?: any) {
-    log.info('', `同步远程${branchName}分支代码`);
+    // log.info('', `同步远程${branchName}分支代码`);
     await this.git.pull('origin', branchName, options)
       .catch(err => {
         log.error('pullRemoteRepo', err.message);
@@ -335,9 +420,9 @@ class Git {
   }
 
   async pushRemoteRepo(branchName: string) {
-    log.info('', 'pushRemoteRepo', `推送代码至${branchName}分支`);
+    // log.info('', 'pushRemoteRepo', `推送代码至${branchName}分支`);
     await this.git.push('origin', branchName);
-    log.success('推送代码成功');
+    // log.success('推送代码成功');
   }
 
   async checkRemoteMaster() {
@@ -581,42 +666,42 @@ pnpm-debug.log*
   }
 
   async deleteLocalBranch() {
-    log.info('开始删除本地开发分支', this.branch);
+    // log.info('开始删除本地开发分支', this.branch);
     await this.git.deleteLocalBranch(this.branch);
-    log.success('删除本地分支成功', this.branch);
+    // log.success('删除本地分支成功', this.branch);
   }
 
   async deleteRemoteBranch() {
-    log.info('开始删除远程分支', this.branch);
+    // log.info('开始删除远程分支', this.branch);
     await this.git.push(['origin', '--delete', this.branch]);
-    log.success('删除远程分支成功', this.branch);
+    // log.success('删除远程分支成功', this.branch);
   }
 
-  async mergeBranchToMaster() {
-    log.info('开始合并代码', `[${this.branch}] -> [master]`);
-    await this.git.mergeFromTo(this.branch, 'master');
-    log.success('代码合并成功', `[${this.branch}] -> [master]`);
+  async mergeBranchToMaster(branch: string) {
+    // log.info('开始合并代码', `[${branch}] -> [master]`);
+    await this.git.mergeFromTo(branch, 'master');
+    // log.success('代码合并成功', `[${branch}] -> [master]`);
   }
 
   async checkTag() {
-    log.info('','获取远程 tag 列表');
+    // log.info('','获取远程 tag 列表');
     const tag = `${VERSION_RELEASE}/${this.version}`;
     const tagList = await this.getRemoteBranchList(VERSION_RELEASE);
     if (tagList.includes(this.version)) {
-      log.success('远程 tag 已存在', tag);
+      // log.success('远程 tag 已存在', tag);
       await this.git.push(['origin', `:refs/tags/${tag}`]);
-      log.success('远程 tag 已删除', tag);
+      // log.success('远程 tag 已删除', tag);
     }
     const localTagList = await this.git.tags();
     if (localTagList.all.includes(tag)) {
-      log.success('本地 tag 已存在', tag);
+      // log.success('本地 tag 已存在', tag);
       await this.git.tag(['-d', tag]);
-      log.success('本地 tag 已删除', tag);
+      // log.success('本地 tag 已删除', tag);
     }
     await this.git.addTag(tag);
-    log.success('本地 tag 创建成功', tag);
+    // log.success('本地 tag 创建成功', tag);
     await this.git.pushTags('origin');
-    log.success('远程 tag 推送成功', tag);
+    // log.success('远程 tag 推送成功', tag);
   }
 
   async uploadTemplate() {

@@ -417,7 +417,6 @@ class InitCommand extends Command {
         if (projectInfo.componentDescription) {
             projectInfo.description = projectInfo.componentDescription
         }
-        console.log('projectInfo', projectInfo)
         return projectInfo
     }
 
