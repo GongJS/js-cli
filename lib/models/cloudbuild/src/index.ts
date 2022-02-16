@@ -3,7 +3,7 @@ import { log, request } from '@js-cli/utils';
 import { get } from 'lodash';
 import inquirer from 'inquirer'
 
-const WS_SERVER = 'http://1.116.156.44:8085';
+const WS_SERVER = 'http://127.0.0.1:8085';
 const TIME_OUT = 5 * 60 * 1000;
 const CONNECT_TIME_OUT = 5 * 1000;
 
@@ -148,7 +148,8 @@ class CloudBuild {
         resolve(ret);
       });
       this.socket.on('error', (err: Error) => {
-        reject(err);
+        log.error('build error',JSON.stringify(err));
+        reject(false);
       });
     });
   }

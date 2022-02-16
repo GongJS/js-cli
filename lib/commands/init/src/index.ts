@@ -16,6 +16,7 @@ const TYPE_COMPONENT = 'component'
 const TEMPLATE_TYPE_NORMAL = 'normal'
 const TEMPLATE_TYPE_CUSTOM = 'custom'
 const WHITE_COMMAND = ['npm', 'cnpm']
+const COMPONENT_FILE = '.componentrc';
 const userHome = os.homedir()
 export interface ProjectInfoType {
     projectName: string
@@ -37,6 +38,8 @@ interface TemplateInfoType {
     startCommand: string,
     tag: string[],
     ignore: string[]
+    buildPath?: string
+    examplePath?: string
 }
 
 interface TemplateNpmInfoType {
@@ -146,6 +149,7 @@ class InitCommand extends Command {
     async installNormalTemplate() {
         // 拷贝模板至当前目录
         let spinner = spinnerStart('正在安装模板')
+        const targetPath = process.cwd();
         try {
             const templatePath = path.resolve(this.templateNpm.cacheFilePath, 'template')
             const targetPath = process.cwd()
@@ -162,10 +166,27 @@ class InitCommand extends Command {
         const templateIgnore = this.templateInfo.ignore || []
         const ignore = ['**/node_modules/**', ...templateIgnore]
         await this.ejsRender({ ignore })
+        // 如果是组件，则生成组件配置文件
+        await this.createComponentFile(targetPath);
         await this.execCommand(installCommand, '依赖安装失败')
         await this.execCommand(startCommand, '项目启动失败')
     }
 
+    async createComponentFile(targetPath: string) {
+        const templateInfo = this.templateInfo;
+        const projectInfo = this.projectInfo;
+        if (templateInfo.tag.includes(TYPE_COMPONENT)) {
+            const componentData = {
+                ...projectInfo,
+                buildPath: templateInfo.buildPath,
+                examplePath: templateInfo.examplePath,
+                npmName: templateInfo.npmName,
+                npmVersion: templateInfo.version,
+            };
+            const componentFile = path.resolve(targetPath, COMPONENT_FILE);
+            fs.writeFileSync(componentFile, JSON.stringify(componentData));
+        }
+    }
     async installCustomTemplate() {
         // 查询自定义模版入口信息
         if (await this.templateNpm.exists()) {
@@ -294,7 +315,7 @@ class InitCommand extends Command {
 
     async getProjectInfo() {
         function isValidName(v: string) {
-            return /^[@a-zA-Z]+([-][a-zA-Z][a-zA-Z0-9]*|[_][a-zA-Z][a-zA-Z0-9]*|[\/][a-zA-Z][a-zA-Z0-9]*|[a-zA-Z0-9])*$/.test(v)
+            return /^(@[a-zA-Z0-9-_]+\/)?[a-zA-Z]+([-][a-zA-Z][a-zA-Z0-9]*|[_][a-zA-Z][a-zA-Z0-9]*|[a-zA-Z0-9])*$/.test(v);
         }
         let projectInfo: Partial<ProjectInfoType> = {}
         let isProjectNameValid = false
