@@ -241,7 +241,7 @@ class Git {
     const pkg = this.getPackageJson();
     if (this.buildCmd) {
       const buildCmdArray = this.buildCmd.split(' ');
-      if (buildCmdArray[0] !== 'npm' && buildCmdArray[0] !== 'cnpm') {
+      if (buildCmdArray[0] !== 'npm' && buildCmdArray[0] !== 'cnpm' && buildCmdArray[0] !== 'yarn') {
         throw new Error('Build命令非法，必须使用npm或cnpm！');
       }
     } else {
@@ -355,7 +355,7 @@ class Git {
     } else {
       await this.git.checkoutLocalBranch(branch);
     }
-    log.success(`分支切换到${branch}`);
+    // log.success(`分支切换到${branch}`);
   }
 
   async checkStash() {
@@ -570,7 +570,7 @@ class Git {
     const tokenPath = this.createPath(GIT_TOKEN_FILE);
     let token = readFile(tokenPath);
     if (!token || this.refreshToken) {
-      log.warn('', `token未生成, 请先生成 Github token， ${terminalLink('链接', this.gitServer.getTokenUrl())}`);
+      log.warn('token未生成, 请先生成 Github token', `链接: ${this.gitServer.getTokenUrl()}`);
       token = (await inquirer.prompt({
         type: 'password',
         name: 'token',
@@ -670,7 +670,6 @@ class Git {
     if (!fs.existsSync(gitIgnore)) {
       writeFile(gitIgnore, `.DS_Store
 node_modules
-/dist
 
 
 # local env files

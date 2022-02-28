@@ -49,7 +49,8 @@ class PublishCommand extends Command {
       await git.publish();
       // 3.云构建和云发布
       const endTime = new Date().getTime();
-      log.info('本次发布耗时：', Math.floor((endTime - startTime) / 1000) + '秒');
+      const totalTime = Math.floor((endTime - startTime) / 1000);
+      log.info('本次发布耗时：', `${totalTime}s`);
     } catch (e) {
       log.error('',  (e as Error).message);
       if (process.env.LOG_LEVEL === 'verbose') {
