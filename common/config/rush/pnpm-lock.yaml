@@ -29,11 +29,11 @@ specifiers:
   '@types/npmlog': ^4.1.3
   '@types/path-exists': ^4.0.2
   '@types/root-check': ^1.0.0
-  '@types/semver': ^7.3.9
   '@types/semver-sort': ^0.0.1
   '@types/socket.io-client': 1.4.36
   '@types/url-join': ^4.0.1
   '@types/user-home': ^2.0.0
+  axios: ^0.25.0
   cli-spinner: ^0.2.10
   colors: ^1.4.0
   commander: ^8.3.0
@@ -47,9 +47,11 @@ specifiers:
   kebab-case: ^1.0.1
   listr: ^0.14.3
   lodash: ^4.17.21
+  npminstall: ^4.11.0
   npmlog: ^5.0.1
-  path-exists: 4.0.0
+  path-exists: ^4.0.0
   pkg-dir: ^5.0.0
+  pkg-up: ^3.1.0
   rollup: ^2.60.0
   rollup-plugin-clear: ^2.0.7
   root-check: 1.0.0
@@ -93,11 +95,11 @@ dependencies:
   '@types/npmlog': 4.1.3
   '@types/path-exists': 4.0.2
   '@types/root-check': 1.0.0
-  '@types/semver': 7.3.9
   '@types/semver-sort': 0.0.1
   '@types/socket.io-client': 1.4.36
   '@types/url-join': 4.0.1
   '@types/user-home': 2.0.0
+  axios: 0.25.0
   cli-spinner: 0.2.10
   colors: 1.4.0
   commander: 8.3.0
@@ -111,9 +113,11 @@ dependencies:
   kebab-case: 1.0.1
   listr: 0.14.3
   lodash: 4.17.21
+  npminstall: 4.11.0
   npmlog: 5.0.1
   path-exists: 4.0.0
   pkg-dir: 5.0.0
+  pkg-up: 3.1.0
   rollup: 2.67.1
   rollup-plugin-clear: 2.0.7
   root-check: 1.0.0
@@ -418,7 +422,7 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.3.2
+      debug: 4.3.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -427,7 +431,7 @@ packages:
     resolution: {integrity: sha512-+V/rGa3EuU74H6wR04plBb7Ks10FbtUQgRj/FQOG7uUIEuaINI+AiqJR1k6t3SVNs7o7ZjIdus6706qqzVq8jQ==}
     engines: {node: '>= 8.0.0'}
     dependencies:
-      debug: 4.3.2
+      debug: 4.3.3
       depd: 1.1.2
       humanize-ms: 1.2.1
     transitivePeerDependencies:
@@ -860,18 +864,6 @@ packages:
       ms: 2.0.0
     dev: false
 
-  /debug/4.3.2:
-    resolution: {integrity: sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
-    dev: false
-
   /debug/4.3.3:
     resolution: {integrity: sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==}
     engines: {node: '>=6.0'}
@@ -1137,6 +1129,13 @@ packages:
       minimatch: 3.0.4
     dev: false
 
+  /find-up/3.0.0:
+    resolution: {integrity: sha512-1yD6RmLI1XBfxugvORwlck6f75tYL+iR0jqwsOrOxMZyGYqUuDhJ0l4AXdO1iX/FTs9cBAMEk1gWSEx1kSbylg==}
+    engines: {node: '>=6'}
+    dependencies:
+      locate-path: 3.0.0
+    dev: false
+
   /find-up/4.1.0:
     resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
     engines: {node: '>=8'}
@@ -1292,7 +1291,7 @@ packages:
     dependencies:
       '@tootallnate/once': 1.1.2
       data-uri-to-buffer: 3.0.1
-      debug: 4.3.2
+      debug: 4.3.3
       file-uri-to-path: 2.0.0
       fs-extra: 8.1.0
       ftp: 0.3.10
@@ -1399,7 +1398,7 @@ packages:
     dependencies:
       '@tootallnate/once': 1.1.2
       agent-base: 6.0.2
-      debug: 4.3.2
+      debug: 4.3.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1418,7 +1417,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.2
+      debug: 4.3.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1721,6 +1720,14 @@ packages:
       - zen-observable
     dev: false
 
+  /locate-path/3.0.0:
+    resolution: {integrity: sha512-7AO748wWnIhNqAuaty2ZWHkQHRSNfPVIsPIfwEOWO22AmaoVrWavlOcMR5nzTLNYvp36X220/maaRsrec1G65A==}
+    engines: {node: '>=6'}
+    dependencies:
+      p-locate: 3.0.0
+      path-exists: 3.0.0
+    dev: false
+
   /locate-path/5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
     engines: {node: '>=8'}
@@ -1956,7 +1963,7 @@ packages:
       bytes: 3.1.1
       chalk: 2.4.2
       cmd-shim-hotfix: 3.0.3
-      debug: 4.3.2
+      debug: 4.3.3
       destroy: 1.0.4
       fs-extra: 7.0.1
       minimatch: 3.0.4
@@ -2126,6 +2133,13 @@ packages:
       yocto-queue: 0.1.0
     dev: false
 
+  /p-locate/3.0.0:
+    resolution: {integrity: sha512-x+12w/To+4GFfgJhBEpiDcLozRJGegY+Ei7/z0tSLkMmxGZNybVMSfWj9aJn8Z5Fc7dBUNJOOVgPv2H7IwulSQ==}
+    engines: {node: '>=6'}
+    dependencies:
+      p-limit: 2.3.0
+    dev: false
+
   /p-locate/4.1.0:
     resolution: {integrity: sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==}
     engines: {node: '>=8'}
@@ -2156,7 +2170,7 @@ packages:
     dependencies:
       '@tootallnate/once': 1.1.2
       agent-base: 6.0.2
-      debug: 4.3.2
+      debug: 4.3.3
       get-uri: 3.0.2
       http-proxy-agent: 4.0.1
       https-proxy-agent: 5.0.0
@@ -2182,6 +2196,11 @@ packages:
 
   /parseuri/0.0.6:
     resolution: {integrity: sha512-AUjen8sAkGgao7UyCX6Ahv0gIK2fABKmYjvP4xmy5JaKvcbTRueIqIPHLAfq30xJddqSE033IOMUSOMCcK3Sow==}
+    dev: false
+
+  /path-exists/3.0.0:
+    resolution: {integrity: sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=}
+    engines: {node: '>=4'}
     dev: false
 
   /path-exists/4.0.0:
@@ -2227,6 +2246,13 @@ packages:
       find-up: 5.0.0
     dev: false
 
+  /pkg-up/3.1.0:
+    resolution: {integrity: sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==}
+    engines: {node: '>=8'}
+    dependencies:
+      find-up: 3.0.0
+    dev: false
+
   /prelude-ls/1.1.2:
     resolution: {integrity: sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=}
     engines: {node: '>= 0.8.0'}
@@ -2241,7 +2267,7 @@ packages:
     engines: {node: '>= 8'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.2
+      debug: 4.3.3
       http-proxy-agent: 4.0.1
       https-proxy-agent: 5.0.0
       lru-cache: 5.1.1
@@ -2580,7 +2606,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.2
+      debug: 4.3.3
       socks: 2.6.1
     transitivePeerDependencies:
       - supports-color
@@ -3056,7 +3082,7 @@ packages:
     dev: false
 
   file:projects/add.tgz:
-    resolution: {integrity: sha512-4rafoSZFzgcbWVvscQ+Yh3zEJDmF3aAlbtUoqMocM6CgDvZS7W1o7/2yEPbDyF6zZW8zUyzlNV8fxFcxrIKNzQ==, tarball: file:projects/add.tgz}
+    resolution: {integrity: sha512-rjZCLsKu+nJSwXc/wfGGmZQ/hRF32YCp9tfEC3JkKnHO57SMvztZZ1kaKmiw05nPszJv0ymCfWZwg6PFTOAzlg==, tarball: file:projects/add.tgz}
     name: '@rush-temp/add'
     version: 0.0.0
     dependencies:
@@ -3066,10 +3092,15 @@ packages:
       '@types/ejs': 3.1.0
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
+      '@types/inquirer': 8.2.0
       '@types/node': 16.11.9
+      '@types/semver': 7.3.9
       ejs: 3.1.6
       fs-extra: 9.1.0
       glob: 7.2.0
+      inquirer: 8.2.0
+      path-exists: 4.0.0
+      pkg-up: 3.1.0
       rollup: 2.67.1
       rollup-plugin-clear: 2.0.7
       rollup-plugin-json: 4.0.0
@@ -3124,7 +3155,7 @@ packages:
     dev: false
 
   file:projects/core.tgz:
-    resolution: {integrity: sha512-ZfjWmLotvS3k1GhxqpILNjz8/yptswXoOicIJe0f3i96g+TjzSy5gkf15h1++KnhO0dbmdMYcW4OuG1l6pIadA==, tarball: file:projects/core.tgz}
+    resolution: {integrity: sha512-p2tq99/xpb9IksuS9bwqlVJpFWjbqopydW9y5ZKjVH1yQfX9HzoTsK03QYs02I3ikxLfFe4eQZKPYOLANpxNCg==, tarball: file:projects/core.tgz}
     name: '@rush-temp/core'
     version: 0.0.0
     dependencies:
@@ -3237,7 +3268,7 @@ packages:
     dev: false
 
   file:projects/package.tgz:
-    resolution: {integrity: sha512-uijbOGdqH8G7+vEvFOdBeqNxORCK/RTHlKVyzuSerx1o8xlCEa6PfgRQGHtAG3f1H0pO7kQLu5Jgbjx4PqZCcA==, tarball: file:projects/package.tgz}
+    resolution: {integrity: sha512-ezbuFgqRS5S0dC7wSEOGfaJ900cbDwYEH05CrtQ+uaRJnF+DHsJDi5wmxW1V7IGQ+60ylGkJ5eERoKmD9OSIrQ==, tarball: file:projects/package.tgz}
     name: '@rush-temp/package'
     version: 0.0.0
     dependencies:
@@ -3277,7 +3308,7 @@ packages:
     dev: false
 
   file:projects/utils.tgz:
-    resolution: {integrity: sha512-HgcRMusowogQXGrKi9LxqwfnIbtNhXfXXRVHfxEz3QFTnllc7wbF5vYmbGMBQQIcjrB3pIE2V+h8IsM4St3F3g==, tarball: file:projects/utils.tgz}
+    resolution: {integrity: sha512-50Gx9+VJZqH9+Ly6kOVYBQfIV1u+1D80PVjV54/8jwFHrfAGcotE/pY4TUKcDfyi7kCXpjlmg3o+FIzhWJBXNg==, tarball: file:projects/utils.tgz}
     name: '@rush-temp/utils'
     version: 0.0.0
     dependencies:
@@ -3289,7 +3320,7 @@ packages:
       '@types/semver': 7.3.9
       '@types/semver-sort': 0.0.1
       '@types/url-join': 4.0.1
-      axios: 0.24.0
+      axios: 0.25.0
       cli-spinner: 0.2.10
       npmlog: 5.0.1
       rollup: 2.67.1

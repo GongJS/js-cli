@@ -21,7 +21,8 @@
     "glob": "^7.2.0",
     "inquirer": "^8.1.0",
     "path-exists": "^4.0.0",
-    "pkg-up": "^3.1.0"
+    "pkg-up": "^3.1.0",
+    "semver": "^7.3.5"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
@@ -31,10 +32,9 @@
     "@types/glob": "^7.2.0",
     "@types/inquirer": "^8.1.0",
     "@types/node": "^16.11.7",
-    "@types/semver": "^7.3.5",
+    "@types/semver": "^7.3.9",
     "rollup": "^2.60.0",
     "rollup-plugin-clear": "^2.0.7",
-    "semver": "^7.3.5",
     "tslib": "^2.3.1",
     "typescript": "^4.5.2"
   }
