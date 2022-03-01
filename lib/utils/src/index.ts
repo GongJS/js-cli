@@ -88,4 +88,24 @@ const writeFile = (path: string, data: any, rewrite = true) => {
     }
 }
 
-export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request, readFile, writeFile };
+const exec = (command: string, args: string[], options: any) => {
+    const win32 = process.platform === 'win32';
+
+    const cmd = win32 ? 'cmd' : command;
+    const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
+
+    return require('child_process').spawn(cmd, cmdArgs, options || {});
+}
+
+const execAsync = (command: string, args: string[], options: any) => {
+    return new Promise((resolve, reject) => {
+        const p = exec(command, args, options);
+        p.on('error', (e: string) => {
+            reject(e);
+        });
+        p.on('exit', (c: string) => {
+            resolve(c);
+        });
+    });
+}
+export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request, readFile, writeFile, exec, execAsync };
