@@ -3,6 +3,7 @@ import fs from 'fs'
 import cp from 'child_process'
 import log from './log';
 import * as http from './getNpmInfo'
+import { SERVER } from './variable'
 import request from './request';
 
 const KEBAB_REGEX = /[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g;
@@ -108,4 +109,21 @@ const execAsync = (command: string, args: string[], options: any) => {
         });
     });
 }
-export { log, http, isObject, formatPath, spawn, execSpawn, spinnerStart, sleep, kebabCase, request, readFile, writeFile, exec, execAsync };
+
+export {
+    log,
+    http,
+    isObject,
+    formatPath,
+    spawn,
+    execSpawn,
+    spinnerStart,
+    sleep,
+    kebabCase,
+    request,
+    readFile,
+    writeFile,
+    exec,
+    execAsync,
+    SERVER
+};

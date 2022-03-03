@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/package",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "scripts": {
     "dev": "npx rollup -c -w",
@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/utils": "~1.0.2",
+    "@js-cli/utils": "~1.0.3",
     "fs-extra": "^9.0.1",
     "npminstall": "^4.11.0",
     "path-exists": "^4.0.0",

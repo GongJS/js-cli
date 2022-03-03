@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/add",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@js-cli/models": "~1.0.1",
-    "@js-cli/utils": "~1.0.2",
+    "@js-cli/utils": "~1.0.3",
     "ejs": "^3.1.6",
     "fs-extra": "^9.0.1",
     "glob": "^7.2.0",

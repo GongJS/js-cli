@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/core",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "bin": {
     "js-cli": "bin/index.js"
@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/utils": "~1.0.2",
+    "@js-cli/utils": "~1.0.3",
     "colors": "^1.4.0",
     "commander": "^8.3.0",
     "dotenv": "^10.0.0",
@@ -28,7 +28,7 @@
     "root-check": "1.0.0",
     "semver": "^7.3.5",
     "@js-cli/commands": "~1.0.1",
-    "@js-cli/exec": "~1.0.1"
+    "@js-cli/exec": "~1.0.2"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",

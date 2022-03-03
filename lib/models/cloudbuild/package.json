@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/utils": "~1.0.2",
+    "@js-cli/utils": "~1.0.3",
     "inquirer": "^8.1.0",
     "lodash": "^4.17.21",
     "simple-git": "^3.1.1",

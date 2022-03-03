@@ -1,9 +1,9 @@
 import io, { Socket } from 'socket.io-client';
-import { log, request } from '@js-cli/utils';
+import { log, request, SERVER } from '@js-cli/utils';
 import { get } from 'lodash';
 import inquirer from 'inquirer'
 
-const WS_SERVER = 'http://1.116.156.44:8085';
+const WS_SERVER = SERVER.websocketUrl;
 const TIME_OUT = 5 * 60 * 1000;
 const CONNECT_TIME_OUT = 5 * 1000;
 
@@ -101,7 +101,6 @@ class CloudBuild {
           type: projectType,
         },
       })) as any;
-      console.log(4444, ossProject);
       // 2.判断当前项目的OSS文件是否存在
       if (ossProject.code === 0 && ossProject.data.length > 0) {
         // 3.询问用户是否进行覆盖安装

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { log } from '@js-cli/utils'
+import { log, SERVER } from '@js-cli/utils'
 
 interface CreateComponentType {
   component: any,
@@ -12,9 +12,10 @@ interface CreateComponentType {
     owner: string,
   },
 }
+
 export const createComponent = async (component: CreateComponentType) => {
   try {
-    const response = await axios.post('http://1.116.156.44:8085/api/v1/components', component);
+    const response = await axios.post(`${SERVER.apiUrl}/components`, component);
     log.verbose('response', response as unknown as string);
     const { data } = response;
     if (data.code === 0) {

@@ -4,7 +4,6 @@ import simpleGit, { SimpleGit, StatusResult } from 'simple-git';
 import fse from 'fs-extra';
 import userHome from 'user-home';
 import inquirer from 'inquirer';
-import terminalLink from 'terminal-link';
 import semver from 'semver';
 import Listr from 'listr'
 import { Observable } from 'rxjs';
@@ -752,7 +751,7 @@ pnpm-debug.log*
     if (this.sshUser && this.sshIp && this.sshPath) {
       log.info('','开始下载模板文件');
       let ossTemplateFile = (await request({
-        url: '/oss/get',
+        url: '/file/oss',
         params: {
           name: this.name,
           type: this.prod ? 'prod' : 'dev',

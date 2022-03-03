@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
+import { SERVER } from './variable'
 
-const BASE_URL = process.env.JS_CLI_BASE_URL ? process.env.JS_CLI_BASE_URL : 'http://1.116.156.44:8085'
+const BASE_URL = process.env.JS_CLI_BASE_URL ? process.env.JS_CLI_BASE_URL : SERVER.apiUrl
 
 const request = axios.create({
     baseURL: BASE_URL,
