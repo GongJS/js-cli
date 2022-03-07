@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/git",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "scripts": {
     "dev": "npx rollup -c -w",
@@ -13,8 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/cloudbuild": "~1.0.0",
-    "@js-cli/utils": "~1.0.3",
+    "@js-cli/cloudbuild": "~1.0.2",
+    "@js-cli/utils": "~1.0.5",
     "axios": "^0.25.0",
     "fs-extra": "^9.0.1",
     "inquire": "^0.4.8",

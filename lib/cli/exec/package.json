@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/exec",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -14,8 +14,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@js-cli/utils":"~1.0.3",
-    "@js-cli/package":"~1.0.1"
+    "@js-cli/utils":"~1.0.5",
+    "@js-cli/package":"~1.0.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",

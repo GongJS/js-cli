@@ -7,9 +7,10 @@ import inquirer from 'inquirer';
 import semver from 'semver';
 import Listr from 'listr'
 import { Observable } from 'rxjs';
-import { readFile, writeFile, spinnerStart, log, request } from '@js-cli/utils';
+import { readFile, writeFile, spinnerStart, log, request, SERVER } from '@js-cli/utils';
 import CloudBuild from '@js-cli/cloudbuild';
 import Github from './Github';
+import Gitee from './Gitee';
 import { createComponent } from './ComponentRequest'
 
 interface OssTemplateFileType {
@@ -27,6 +28,7 @@ const GIT_LOGIN_FILE = '.git_login';
 const GIT_IGNORE_FILE = '.gitignore';
 const GIT_PUBLISH_FILE = '.git_publish';
 const GITHUB = 'github';
+const GITEE = 'gitee';
 const COMPONENT_FILE = '.componentrc';
 const REPO_OWNER_USER = 'user';
 const REPO_OWNER_ORG = 'org';
@@ -37,6 +39,9 @@ const TEMPLATE_TEMP_DIR = 'oss';
 const GIT_SERVER_TYPE = [{
   name: 'Github',
   value: GITHUB,
+}, {
+  name: 'Gitee',
+  value: GITEE,
 }];
 
 const GIT_OWNER_TYPE = [{
@@ -133,6 +138,7 @@ class Git {
       await this.uploadComponentToNpm();
       this.runCreateTagTask();
     }
+    log.success('物料发布至物料平台完成', `请访问: ${SERVER.materialPlatformUrl}`)
   }
   isComponent() {
     const componentFilePath = path.resolve(this.dir, COMPONENT_FILE);
@@ -569,7 +575,7 @@ class Git {
     const tokenPath = this.createPath(GIT_TOKEN_FILE);
     let token = readFile(tokenPath);
     if (!token || this.refreshToken) {
-      log.warn('token未生成, 请先生成 Github token', `链接: ${this.gitServer.getTokenUrl()}`);
+      log.warn(`token未生成, 请先生成 ${this.gitServer.type} token`, `链接: ${this.gitServer.getTokenUrl()}`);
       token = (await inquirer.prompt({
         type: 'password',
         name: 'token',
@@ -596,7 +602,7 @@ class Git {
       throw new Error('组织信息获取失败！');
     }
     // log.verbose('orgs', JSON.stringify(this.orgs));
-    log.success('Github' + ' 用户和组织信息获取成功');
+    log.success(`${this.gitServer.type}` + ' 用户和组织信息获取成功');
   }
 
   async checkGitOwner() {
@@ -696,6 +702,8 @@ pnpm-debug.log*
   createGitServer(gitServer = '') {
     if (gitServer === GITHUB) {
       return new Github();
+    } else if (gitServer === GITEE) {
+      return new Gitee();
     }
     return null;
   }

@@ -1,6 +1,6 @@
 {
   "name": "@js-cli/init",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -24,9 +24,9 @@
     "npminstall": "^4.11.0",
     "pkg-dir": "^5.0.0",
     "semver": "^7.3.5",
-    "@js-cli/command": "~1.0.0",
-    "@js-cli/package": "~1.0.1",
-    "@js-cli/utils": "~1.0.3"
+    "@js-cli/command": "~1.0.3",
+    "@js-cli/package": "~1.0.3",
+    "@js-cli/utils": "~1.0.5"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.0",

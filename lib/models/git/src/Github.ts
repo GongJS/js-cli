@@ -3,6 +3,9 @@ import GithubRequest from './GithubRequest';
 
 class Github extends GitServer {
   public request: any
+  constructor() {
+    super('github');
+  }
 
   getUser() {
     return this.request.get('/user');
