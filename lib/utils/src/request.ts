@@ -1,19 +1,41 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { SERVER } from './variable'
 
-const BASE_URL = process.env.JS_CLI_BASE_URL ? process.env.JS_CLI_BASE_URL : SERVER.apiUrl
+interface IResponse<T> {
+    code: number;
+    data: T;
+    message: string;
+}
+const service = axios.create({
+    baseURL: SERVER.apiUrl,
+    timeout: 10000,
+});
+const request = <T>(options: AxiosRequestConfig) => {
+    return service.request<IResponse<T>>(options).then((response) => {
+        if (response.data.code === 0) {
+            return response.data.data;
+        } else {
+            return Promise.reject(new Error(response.data.message));
+        }
+    });
+};
+service.interceptors.request.use(
+  (config) => {
+      return config;
+  },
+  (error) => {
+      return Promise.reject(error);
+  },
+);
 
-const request = axios.create({
-    baseURL: BASE_URL,
-    timeout: 30000,
-})
+service.interceptors.response.use<{ data: { code: number } }>(
+  (response) => {
+      return response;
+  },
+  (error) => {
+      return Promise.reject(error);
+  },
+);
 
-request.interceptors.response.use( (response: AxiosResponse) => {
-    if (response.status === 200) {
-        return response.data
-    }},
-    (error: any) => {
-        return Promise.reject(error)
-    })
+export default request;
 
-export default request

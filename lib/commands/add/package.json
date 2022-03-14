@@ -16,6 +16,7 @@
   "dependencies": {
     "@js-cli/models": "~1.0.1",
     "@js-cli/utils": "~1.0.5",
+    "axios": "^0.25.0",
     "ejs": "^3.1.6",
     "fs-extra": "^9.0.1",
     "glob": "^7.2.0",

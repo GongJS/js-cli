@@ -138,7 +138,9 @@ class Git {
       await this.uploadComponentToNpm();
       this.runCreateTagTask();
     }
-    log.success('物料发布至物料平台完成', `请访问: ${SERVER.materialPlatformUrl}`)
+    if (this.isComponent() && ret ) {
+      log.success('物料发布至物料平台完成', `请访问: ${SERVER.materialPlatformUrl}`)
+    }
   }
   isComponent() {
     const componentFilePath = path.resolve(this.dir, COMPONENT_FILE);

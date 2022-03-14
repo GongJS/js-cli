@@ -1,6 +1,6 @@
 import Command from '@js-cli/command'
 import Package from '@js-cli/package'
-import { log, kebabCase, sleep, spinnerStart, execSpawn } from '@js-cli/utils'
+import {log, kebabCase, sleep, spinnerStart, execSpawn, request} from '@js-cli/utils'
 import fs from 'fs'
 import fse from 'fs-extra'
 import inquirer from 'inquirer'
@@ -9,7 +9,6 @@ import path from 'path'
 import os from 'os'
 import glob from 'glob'
 import ejs from 'ejs'
-import getProjectTemplate from './getProjectTemplate'
 
 const TYPE_PROJECT = 'project'
 const TYPE_COMPONENT = 'component'
@@ -277,13 +276,18 @@ class InitCommand extends Command {
             name: item.name
         }))
     }
-
+    getProjectTemplate() {
+        return request<TemplateInfoType[]>({
+            url: '/project/template',
+            method: 'get',
+        });
+    }
     async prepare() {
         const localPath = process.cwd()
         const spinner = spinnerStart('从远程仓库获取模版')
-        const template = (await getProjectTemplate()) as unknown as TemplateInfoType[]
+        const template = await this.getProjectTemplate()
         spinner.stop(true)
-        if (!template || template.length === 0) {
+        if (!template || template?.length === 0) {
             throw new Error('项目模版不存在')
         }
         this.template = template

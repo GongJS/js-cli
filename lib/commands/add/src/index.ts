@@ -32,11 +32,10 @@ interface PageTemplateDataType {
     ignore: string[]
     targetPath: string
     type: string
+    pageName: string
+    sectionName: string
 }
 
-interface PageTemplateType extends PageTemplateDataType{
-    pageName: string
-}
 class AddCommand extends Command {
     public projectName: string
     public force: boolean
@@ -47,10 +46,10 @@ class AddCommand extends Command {
     public sectionTemplatePackage!: Package
     public targetPath!: string
     public addMode!: string
-    public pageTemplate!: PageTemplateType
+    public pageTemplate!: PageTemplateDataType
     public pageTemplateData!: PageTemplateDataType[]
-    public sectionTemplate!: any
-    public sectionTemplateData!: any
+    public sectionTemplate!: PageTemplateDataType
+    public sectionTemplateData!: PageTemplateDataType[]
     constructor(args: any[]) {
         super(args)
         this.projectName = ''
@@ -58,9 +57,7 @@ class AddCommand extends Command {
         this.projectInfo = {}
     }
 
-    init () {
-        console.log('init')
-    }
+    init () {}
 
     async exec() {
         // 代码片段（区块）：以源码形式拷贝的vue组件
@@ -74,14 +71,14 @@ class AddCommand extends Command {
     }
 
     getPageTemplate() {
-        return request({
+        return request<PageTemplateDataType[]>({
             url: '/page/template',
             method: 'get',
         });
     }
 
-    async getSectionTemplate() {
-        return request({
+    getSectionTemplate() {
+        return request<PageTemplateDataType[]>({
             url: '/section/template',
             method: 'get',
         });
@@ -134,8 +131,8 @@ class AddCommand extends Command {
     async installSection() {}
 
     async installTemplate() {
-        log.info('正在安装页面模板');
-        log.verbose('pageTemplate', this.pageTemplate);
+        log.info('', '正在安装页面模板');
+        log.verbose('pageTemplate', JSON.stringify(this.pageTemplate));
         // 模板路径
         const templatePath = path.resolve(this.pageTemplatePackage.cacheFilePath, 'template', this.pageTemplate.targetPath);
         // 目标路径
@@ -161,7 +158,7 @@ class AddCommand extends Command {
             throw new Error('自定义模板入口文件不存在！');
         }
         if (fs.existsSync(rootFile)) {
-            log.notice('开始执行自定义模板');
+            log.notice('', '开始执行自定义模板');
             const options = {
                 templatePath,
                 targetPath,
@@ -309,26 +306,6 @@ class AddCommand extends Command {
         }
     }
 
-    async installTemplate() {
-        log.info('','正在安装页面模板');
-        log.verbose('pageTemplate', JSON.stringify(this.pageTemplate));
-        // 模板路径
-        const templatePath = path.resolve(this.pageTemplatePackage.cacheFilePath, 'template', this.pageTemplate.targetPath);
-        // 目标路径
-        const targetPath = this.targetPath;
-        if (!await pathExists(templatePath)) {
-            throw new Error('页面模板不存在！');
-        }
-        log.verbose('templatePath', templatePath);
-        log.verbose('targetPath', targetPath);
-        fse.ensureDirSync(templatePath);
-        fse.ensureDirSync(targetPath);
-        fse.copySync(templatePath, targetPath);
-        await this.ejsRender({ targetPath });
-        await this.dependenciesMerge({ templatePath, targetPath });
-        log.success('安装页面模板成功');
-    }
-
     async execCommand(command: string, cwd: string) {
         let ret;
         if (command) {
@@ -365,7 +342,7 @@ class AddCommand extends Command {
             return o;
         }
 
-        function depDiff(templateDepArr: {key: string, value: string}[], targetDepArr: {key: string, value: string}[]) {
+        function depDiff(templateDepArr: Record<string, string>[], targetDepArr: Record<string, string>[]) {
             let finalDep = [...targetDepArr];
             // 1.场景1：模板中存在依赖，项目中不存在（拷贝依赖）
             // 2.场景2：模板中存在依赖，项目也存在（不会拷贝依赖，但是会在脚手架中给予提示，让开发者手动进行处理）

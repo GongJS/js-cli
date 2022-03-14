@@ -1,5 +1,5 @@
 export const SERVER = {
-  apiUrl: 'http://material.ooaaoo.top/api/v1',
-  websocketUrl: 'http://material.ooaaoo.top',
-  materialPlatformUrl: 'http://material-platform.ooaaoo.top'
+  apiUrl: 'https://material.ooaaoo.top/api/v1',
+  websocketUrl: 'https://material.ooaaoo.top',
+  materialPlatformUrl: 'https://material-platform.ooaaoo.top'
 }
