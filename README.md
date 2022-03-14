@@ -1,11 +1,14 @@
 # js-cli
 
-一个基于 `rush`、`pnpm`、`node` 、`typescript` 开发的高性能、易扩展脚手架.
+一个基于 `rush`、`pnpm`、`node` 、`typescript` 开发的高性能、易扩展脚手架。
 
 <figure>
-    <a href="https://img.shields.io/circleci/project/github/xuzpeng/fiona-ui/master.svg"><img src="https://img.shields.io/circleci/project/github/xuzpeng/fiona-ui/master.svg"></a>
-    <a href="https://img.shields.io/github/languages/count/xuzpeng/fiona-ui.svg"><img src="https://img.shields.io/github/languages/count/xuzpeng/fiona-ui.svg"></a>
-    <a href="https://img.shields.io/npm/l/fiona-ui.svg"><img src="https://img.shields.io/npm/l/fiona-ui.svg"></a>
+    <a href="https://github.com/vuese/vuese/actions"><img src="https://github.com/vuese/vuese/workflows/Node%20CI/badge.svg" alt="build status"/></a>
+  <a href="https://github.com/vue-contrib/vuese/blob/monorepo/LICENSE"><img src="https://img.shields.io/github/license/vuese/vuese.svg" alt="License"/></a>
+  <a href="https://github.com/vue-contrib/vuese/pull/new"><img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
+  <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly"/></a>
+  <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="Code style"/></a>
+  <a href="https://www.patreon.com/HcySunYang"><img src="https://badgen.net/badge/support%20me/donate/ff00ff" alt="Support me"/></a>
 </figure>
 
 ## 安装
@@ -13,23 +16,34 @@
 ```shell
 npm install @js-cli/core -g or yarn add @js-cli/core -g
 ```
+## 共建
+
+1. Fork 源码
+2. 新建分支 `git checkout -b my-new-feature`
+3. commit 代码 `git commit`
+4. 推送分支: `git push origin my-new-feature`
+5. 提 pr
+
+## 开发
+在根目录下执行：
+1. `rush update` 安装依赖
+2. `rush build` ts 转 js
+3. `cd lib/cli/core` 进入到脚手架入口目录
+4. `pnpm link -g` 注册全局命令 `js-cli`
+
+> 若对 `pnpm`、`rush.js` 不熟悉，请参考 [rush + pnpm + ts + monorepo 脚手架开发之环境篇一](https://juejin.cn/post/7034111809728544799)
 
 ## 使用
 ```
-js-cli init
+js-cli 命令
 ```
-执行 `js-cli` 命令后按照提示，选择对应的模版即可远程拉取模版并执行相关指令(项目依赖安装、启动项目), 支持 `通用` 和 `自定义` 两种模版格式.
+目前已开发完的命令有:
+- `js-cli init`: 根据模版初始化项目
+- `js-cli add`: 在项目中添加页面
+- `js-cli publish`: 发布项目
 
-> 首次执行该命令后，会在用户根目录下创建 `.js-cli` 目录用来缓存脚手架相关依赖及安装的模版，后续用户在使用时会自动检测(脚手架、模版)版本并更新到最新版本。
-
-## 创建新模版
-- 1. 执行 `js-cli init` 命令后，选择 `项目 -> 基础模版`, 模版下载完成后，把新模版文件都拷贝到基础模版的 `template` 文件夹下，把 `package.json` 文件中的 `name`、 `version` 换成 cjs 语法 `<%= className %>` 、 `<%= version %>`, 这两个字段的值由用户在模版初始化的时候输入
-- 2. 通过 `npm publish ` 把新模版发布到 `npm`
-- 3. 通过 [模版接口](http://1.116.156.44:8085/swagger-ui.html)里的 `创建模版` 接口，把刚才发布成功的新模版相关信息保存到云端，信息保存成功后，后续再执行 `js-cli init` 命令即可看到刚才新发布的模版选项
-
-## 如何用 rush 来高效的开发脚手架 ？
-
-待更新。。。
+更详细的用法请参考文档 [js-cli](https://gongjs.github.io/js-cli/)
+> 命令执行成功后，会在用户根目录下创建 `.js-cli` 文件夹用来缓存脚手架相关依赖及安装的模版，后续用户在使用时会自动检测(脚手架、模版)版本并更新到最新版本。
 
 ## PR [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
